@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Projecto RTM – Mobile Sales · Grupo Naval Angola">
+<link rel="icon" type="image/png" href="naval-logo.png">
+<title>Projecto RTM – Mobile Sales</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<script>
+(function(){try{var h=new Date().getHours();if(h>=19||h<7){document.documentElement.classList.add('night');}}catch(e){}})();
+</script>
+<style>
+/* Layout: Apple product-page rhythm, kept compact — full-bleed bands alternating light grey and black, centred headlines, gradient numbers in Naval blues, bento tiles; light bands turn dark at night (19h–7h) */
+:root{
+  --bg:#f5f5f7; --bg-alt:#ffffff; --tile:#ffffff; --tile-2:#f5f5f7; --ink:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7;
+  --link:#0f6aa6; --navy:#273777; --bar-a:#273777; --bar-b:#b8c3dd; --bar-c:#2397d4; --cta:#273777;
+  --warn:#b45309; --good:#1d8a50; --nav:rgba(251,251,253,.8); --nav-ink:#1d1d1f;
+  --grad:linear-gradient(90deg,#2397d4 0%,#1f6fb5 50%,#273777 100%);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Inter","Helvetica Neue",Arial,sans-serif;
+  --logo-l:inline-block; --logo-d:none;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000; --bg-alt:#0b0b0d; --tile:#1d1d1f; --tile-2:#141416; --ink:#f5f5f7; --muted:#a1a1a6; --line:#3a3a3c;
+  --link:#4fb3ee; --navy:#9fb0f0; --bar-a:#7b90e6; --bar-b:#3f4766; --bar-c:#4fb3ee; --cta:#2397d4;
+  --warn:#f2a65a; --good:#4cc38a; --nav:rgba(22,22,23,.8); --nav-ink:#f5f5f7;
+  --grad:linear-gradient(90deg,#4fb3ee 0%,#7fc8f5 45%,#9fb0f0 100%); --logo-l:none; --logo-d:inline-block; color-scheme:dark}}
+:root.night:not([data-theme="light"]),:root[data-theme="dark"]{
+  --bg:#000000; --bg-alt:#0b0b0d; --tile:#1d1d1f; --tile-2:#141416; --ink:#f5f5f7; --muted:#a1a1a6; --line:#3a3a3c;
+  --link:#4fb3ee; --navy:#9fb0f0; --bar-a:#7b90e6; --bar-b:#3f4766; --bar-c:#4fb3ee; --cta:#2397d4;
+  --warn:#f2a65a; --good:#4cc38a; --nav:rgba(22,22,23,.8); --nav-ink:#f5f5f7;
+  --grad:linear-gradient(90deg,#4fb3ee 0%,#7fc8f5 45%,#9fb0f0 100%); --logo-l:none; --logo-d:inline-block; color-scheme:dark}
+.dark{--bg:#000000; --bg-alt:#000000; --tile:#1d1d1f; --tile-2:#161617; --ink:#f5f5f7; --muted:#86868b; --line:#333336;
+  --link:#4fb3ee; --navy:#9fb0f0; --bar-a:#7b90e6; --bar-b:#3f4766; --bar-c:#4fb3ee; --warn:#f2a65a; --good:#4cc38a; --cta:#2397d4;
+  --grad:linear-gradient(90deg,#4fb3ee 0%,#7fc8f5 45%,#9fb0f0 100%)}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:56px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--nav)}
+h1,h2,h3{margin:0;font-weight:700;text-wrap:balance}
+p{margin:0}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.band{background:var(--bg);color:var(--ink);padding-block:clamp(36px,5vw,56px)}
+.band.alt{background:var(--bg-alt)}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.logo-l{display:var(--logo-l)} .logo-d{display:var(--logo-d)}
+.warn{color:var(--warn)} .good{color:var(--good)} .navy{color:var(--navy)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--nav);color:var(--nav-ink);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:22px;height:48px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.02em;white-space:nowrap}
+.brand img{height:28px;width:auto}
+.links{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin-left:auto;min-width:0}
+.links::-webkit-scrollbar{display:none}
+.links a{color:inherit;opacity:.8;text-decoration:none;font-size:12px;white-space:nowrap;padding:6px 0}
+.links a:hover{opacity:1}
+a:focus-visible,button:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:6px}
+@media (max-width:680px){.links{display:none}}
+
+/* section heads */
+.head{text-align:center;max-width:860px;margin:0 auto 22px}
+.head.inner{margin-top:clamp(36px,5vw,52px)}
+.kicker{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:-.01em}
+.head h2{font-size:clamp(28px,4vw,44px);line-height:1.08;letter-spacing:-.035em;margin-top:4px}
+.head .sub{font-size:clamp(15px,1.7vw,18px);color:var(--muted);line-height:1.4;margin-top:8px;font-weight:500}
+
+/* hero */
+.hero{padding-block:clamp(32px,5vw,52px);overflow:hidden}
+.hgrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:center}
+.hero-logo{width:76px;height:auto;margin-bottom:14px;display:block}
+.hero .eyebrow{font-size:15px;color:var(--muted);font-weight:600}
+.hero h1{font-size:clamp(56px,9vw,104px);line-height:.95;letter-spacing:-.05em;margin-top:4px}
+.hero .tag{font-size:clamp(24px,3.4vw,40px);line-height:1.1;letter-spacing:-.035em;font-weight:700;margin-top:6px}
+.hero .lead{font-size:clamp(16px,1.8vw,19px);color:var(--muted);max-width:520px;margin-top:12px;line-height:1.4;font-weight:500}
+.hero .meta{margin-top:10px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--ink);font-weight:600}
+.stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px}
+.stage .real{position:relative;font-size:13px;line-height:1.5;color:rgba(255,255,255,.8);text-align:center;white-space:nowrap}
+.stage .live{display:inline-block;width:8px;height:8px;border-radius:50%;background:#4cc38a;margin-right:8px;vertical-align:1px;box-shadow:0 0 0 4px rgba(76,195,138,.25)}
+.stage::before{content:"";position:absolute;left:50%;top:12%;width:min(520px,90vw);height:76%;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(35,151,212,.55),rgba(39,55,119,.3) 55%,transparent);filter:blur(28px)}
+.stage img{position:relative;width:min(220px,58vw);border-radius:34px;border:8px solid #1c1c1e;box-shadow:0 30px 60px rgba(0,0,0,.6),inset 0 0 0 1px #3a3a3c}
+@media (prefers-reduced-motion:no-preference){.stage img{animation:rise 1.2s cubic-bezier(.2,.7,.2,1) both}@keyframes rise{from{transform:translateY(24px) scale(.97)}to{transform:none}}}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:28px}
+.stat{background:rgba(29,29,31,.82);border:1px solid #333336;border-radius:18px;padding:16px 14px;text-align:center;min-width:0}
+.stat .v{font-size:clamp(28px,3.6vw,42px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.stat .l{font-size:13px;color:#a1a1a6;margin-top:6px;line-height:1.3}
+@media (max-width:760px){.hgrid{grid-template-columns:1fr;text-align:center}.hero-logo{margin:0 auto 14px}.hero .lead{margin-inline:auto}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* bento */
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.tile{background:var(--tile);border-radius:20px;padding:clamp(18px,2.4vw,24px);min-width:0;overflow:hidden}
+.band.alt .tile{background:var(--tile-2)}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s7{grid-column:span 7}.s8{grid-column:span 8}.s12{grid-column:span 12}
+@media (max-width:860px){.s4,.s5,.s6,.s7,.s8{grid-column:span 12}.s3{grid-column:span 6}}
+@media (max-width:520px){.s3{grid-column:span 12}}
+.stack{display:grid;gap:14px;min-width:0}
+.tile h3{font-size:clamp(17px,1.9vw,20px);letter-spacing:-.02em;line-height:1.2}
+.tile .txt{color:var(--muted);margin-top:4px;font-size:15px}
+.big .lab{font-size:14px;font-weight:600;color:var(--muted)}
+.big .v{font-size:clamp(32px,4vw,48px);font-weight:700;letter-spacing:-.045em;line-height:1.02;margin-top:6px}
+.big .v small{font-size:.38em;letter-spacing:-.01em;margin-left:4px;color:var(--muted);-webkit-text-fill-color:var(--muted)}
+.big .note{color:var(--muted);margin-top:6px;font-size:14px}
+
+/* tables */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th{text-align:left;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:0 10px 8px}
+td{padding:9px 10px;border-top:1px solid var(--line);vertical-align:top}
+td.r,th.r{text-align:right}
+td.was{color:var(--muted)}
+td.now{font-weight:600}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--tile-2);border:1px solid var(--line);white-space:nowrap;margin-right:6px}
+.band.alt .pill{background:var(--tile)}
+.pill.ok{color:var(--good)} .pill.run{color:var(--link)} .pill.next{color:var(--muted)}
+
+/* timeline */
+.tl .row{display:grid;grid-template-columns:62px 1fr;gap:12px;padding:7px 0;border-top:1px solid var(--line);align-items:baseline;font-size:15px}
+.tl .row:first-child{border-top:0}
+.tl .d{font-weight:700;font-variant-numeric:tabular-nums}
+.tl .row.hi .d,.tl .row.hi .t{color:var(--link);font-weight:700}
+.tl .row.pl{color:var(--muted)}
+
+/* charts */
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-bottom:12px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.cols{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:clamp(3px,1vw,10px);height:200px;align-items:end;border-bottom:1px solid var(--line)}
+.col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;min-width:0}
+.col .v{font-size:11px;text-align:center;color:var(--muted);margin-bottom:4px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.col .v.k{color:var(--ink);font-weight:700}
+.col .b{border-radius:6px 6px 0 0}
+.col .b+.b{border-radius:0}
+.xl{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:clamp(3px,1vw,10px);margin-top:6px}
+.xl span{font-size:11px;text-align:center;color:var(--muted);white-space:nowrap}
+.xl span.k{color:var(--ink);font-weight:700}
+.phz{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:clamp(3px,1vw,10px);margin-bottom:10px;font-size:12px;font-weight:600}
+.phz span{padding:4px 8px;border-radius:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phz .pr{grid-column:1/7;background:color-mix(in srgb,var(--bar-a) 14%,transparent);color:var(--ink)}
+.phz .pf{grid-column:7/13;border:1px dashed var(--bar-b);color:var(--muted)}
+.cols.tall{height:240px}
+.col.fc{box-shadow:inset 1px 0 0 0 transparent;position:relative}
+.col.fc::before{content:"";position:absolute;left:calc(-1*clamp(3px,1vw,10px)/2);top:0;bottom:0;border-left:1px dashed var(--line)}
+.col .g{font-size:12px;font-weight:700;text-align:center;color:var(--link);font-variant-numeric:tabular-nums}
+.col.rtm{position:relative}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:18px}
+.kp{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.kp .lab{font-size:12px;font-weight:600;color:var(--muted)}
+.kp .n{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
+.kp .sub{font-size:11px;color:var(--muted)}
+.kp .op{position:absolute;left:-14px;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--tile);border:1px solid var(--line);color:var(--muted)}
+.kp.gain{border-color:var(--bar-c)}.kp.gain .n{color:var(--link)}
+.kp.tot{background:var(--cta);border-color:var(--cta)}.kp.tot .lab,.kp.tot .sub{color:rgba(255,255,255,.75)}.kp.tot .n{color:#fff}
+@media (max-width:560px){.col .g{font-size:10px}.kpis{grid-template-columns:1fr 1fr}.kp .op{display:none}.kp .n{font-size:22px}.phz{font-size:11px}}
+.chart-wrap{position:relative}
+.goal{position:absolute;left:0;right:0;border-top:2px dashed var(--warn)}
+.goal span{position:absolute;right:0;top:-20px;font-size:12px;font-weight:600;color:var(--warn)}
+@media (max-width:560px){.col .v{display:none}.col .v.k{display:block;font-size:10px}}
+.hb{display:grid;gap:8px}
+.hb .r{display:grid;grid-template-columns:150px minmax(0,1fr) 104px;gap:10px;align-items:center;font-size:14px}
+.hb .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .bars{display:grid;gap:2px}
+.hb .bars i{display:block;height:7px;border-radius:0 4px 4px 0;min-width:2px}
+.hb .x{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.hb .x b{color:var(--ink)}
+@media (max-width:520px){.hb .r{grid-template-columns:92px minmax(0,1fr) 78px;font-size:13px}}
+.pb{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:clamp(3px,1vw,10px)}
+.pb .c{display:grid;grid-template-rows:110px 84px;min-width:0}
+.pb .up{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;border-bottom:1px solid var(--muted)}
+.pb .dn{display:flex;flex-direction:column;align-items:center}
+.pb i{display:block;width:72%;max-width:48px}
+.pb .up i{background:var(--bar-c);border-radius:6px 6px 0 0}
+.pb .dn i{background:var(--warn);border-radius:0 0 6px 6px;opacity:.85}
+.pb .lb{font-size:11px;font-weight:600;margin:3px 0;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.pb .lb.opt{display:none}}
+
+/* statement */
+.side{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px;align-items:center}
+.mega .kicker{font-size:15px}
+.mega .v{font-size:clamp(76px,11vw,136px);font-weight:800;letter-spacing:-.06em;line-height:.92;margin-top:6px}
+.mega .cap{font-size:clamp(18px,2.2vw,24px);font-weight:600;letter-spacing:-.025em;margin-top:10px;line-height:1.25}
+.mega .cmp{display:flex;gap:24px;margin-top:20px;flex-wrap:wrap}
+.mega .cmp .n{font-size:clamp(22px,2.8vw,32px);font-weight:700;letter-spacing:-.04em}
+.mega .cmp .t{color:var(--muted);font-size:13px;margin-top:2px}
+@media (max-width:860px){.side{grid-template-columns:1fr}.mega{text-align:center}.mega .cmp{justify-content:center}}
+
+/* misc */
+.seg{display:flex;height:10px;border-radius:999px;overflow:hidden;gap:3px;margin:12px 0 14px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+.flow .s{background:var(--tile-2);border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-weight:600}
+.band.alt .flow .s{background:var(--tile)}
+.flow .s small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.flow .s.hl{background:var(--cta);color:#fff;border-color:transparent}
+.flow .ar{color:var(--link);font-weight:700}
+.band.alt .flow .s.hl,.flow .s.hl{background:var(--cta);color:#fff;border-color:transparent}
+.list{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none;font-size:15px}
+.list li{padding-left:20px;position:relative}
+.list li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--bar-c)}
+.feat .ic{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#2397d4,#273777);margin-bottom:10px}
+.org{display:grid;gap:12px;text-align:center}
+.org .top{justify-self:center;background:var(--cta);color:#fff;border-radius:18px;padding:12px 24px}
+.org .role{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--muted)}
+.org .top .role{color:rgba(255,255,255,.8)}
+.org .who{font-size:18px;font-weight:700;margin-top:2px;letter-spacing:-.02em}
+.org .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.org .two>div{background:var(--tile-2);border-radius:14px;padding:10px}
+.band.alt .org .two>div{background:var(--tile)}
+@media (max-width:600px){.org .two{grid-template-columns:1fr}}
+.phases{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.phases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.phase .k{font-size:13px;font-weight:600;color:var(--link)}
+.phase .v{font-size:clamp(22px,2.4vw,28px);font-weight:700;letter-spacing:-.04em;margin-top:4px}
+.ask{display:grid;grid-template-columns:40px 1fr;gap:12px}
+.ask .k{font-size:32px;font-weight:800;line-height:1;letter-spacing:-.04em}
+footer{background:var(--bg-alt);color:var(--muted);font-size:12px;padding-block:24px 64px;border-top:1px solid var(--line)}
+footer .wrap{display:grid;gap:8px}
+footer img{height:34px;width:auto}
+
+.lang{display:flex;gap:2px;border:1px solid var(--line);border-radius:999px;padding:3px;position:fixed;z-index:20;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.lang .lab{align-self:center;font-size:12px;color:var(--muted);padding:0 6px 0 9px}
+.lang button{font:inherit;font-size:14px;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:999px;padding:7px 15px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--cta);color:#fff}
+
+/* org tree with connector lines */
+.tree{overflow-x:auto;padding-bottom:4px}
+.tree ul{display:flex;justify-content:center;gap:0;padding:22px 0 0;margin:0;list-style:none;position:relative}
+.tree>ul{padding-top:0}
+.tree li{position:relative;padding:22px 8px 0;display:flex;flex-direction:column;align-items:center;flex:1 1 0;min-width:0}
+.tree>ul>li{padding-top:0}
+.tree li::before,.tree li::after{content:"";position:absolute;top:0;width:50%;height:22px;border-top:2px solid var(--bar-c)}
+.tree li::before{right:50%}
+.tree li::after{left:50%;border-left:2px solid var(--bar-c)}
+.tree li:first-child::before,.tree li:last-child::after{border-top:0}
+.tree li:only-child::before,.tree li:only-child::after{display:none}
+.tree li:last-child::before{border-right:2px solid var(--bar-c)}
+.tree li:first-child::after{border-radius:8px 0 0 0}
+.tree li:last-child::before{border-radius:0 8px 0 0}
+.tree ul ul::before{content:"";position:absolute;top:0;left:50%;height:22px;border-left:2px solid var(--bar-c)}
+.tree>ul>li>ul::before{}
+.tree .node{background:var(--tile);border:1px solid var(--line);border-radius:16px;padding:12px 18px;text-align:center;min-width:0;max-width:280px;width:100%}
+.band.alt .tree .node{background:var(--tile-2)}
+.tree .node.top{background:var(--cta);color:#fff;border-color:transparent;max-width:320px}
+.tree .node.sm{padding:10px 12px}
+.tree .role{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--muted)}
+.tree .node.top .role{color:rgba(255,255,255,.8)}
+.tree .who{font-size:17px;font-weight:700;margin-top:2px;letter-spacing:-.02em}
+.tree .node.sm .who{font-size:15px}
+@media (max-width:640px){.tree .node{padding:9px 8px}.tree .role{font-size:9px;letter-spacing:.04em}.tree .who{font-size:13px}.tree .node.sm .who{font-size:12px}.tree li{padding-left:4px;padding-right:4px}}
+
+.chain{display:grid;gap:0;margin-top:12px;position:relative}
+.chain .st{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;padding:8px 0;position:relative}
+.chain .st:not(:last-child)::after{content:"";position:absolute;left:14px;top:38px;bottom:-6px;border-left:2px solid var(--bar-c)}
+.chain .n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--tile);border:2px solid var(--bar-c);color:var(--link)}
+.band.alt .chain .n{background:var(--tile-2)}
+.chain .st.hl .n{background:var(--cta);border-color:var(--cta);color:#fff}
+.chain b{display:block;font-size:15px}
+.tile h3 .pill{font-size:11px}
+.chain small{display:block;color:var(--muted);font-size:13px;margin-top:1px}
+
+/* interactive procedure */
+.proc{background:var(--tile);border-radius:22px;padding:clamp(16px,2.4vw,26px);display:grid;gap:16px}
+.proc-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.seg-tabs{display:flex;gap:2px;background:var(--tile-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg-tabs button{font:inherit;font-size:14px;font-weight:600;color:var(--muted);background:transparent;border:0;border-radius:999px;padding:7px 16px;cursor:pointer}
+.seg-tabs button[aria-selected="true"]{background:var(--cta);color:#fff}
+.proc-ctl{display:flex;gap:8px}
+.pbtn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:var(--tile-2);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.pbtn:disabled{opacity:.4;cursor:default}
+.pbtn.play{background:var(--cta);color:#fff;border-color:transparent}
+.proc-intro{color:var(--muted);font-size:15px;margin:0}
+.track-wrap{overflow-x:auto;padding:14px 4px 6px}
+.track{display:grid;grid-template-columns:repeat(6,minmax(104px,1fr));list-style:none;margin:0;padding:0;min-width:600px}
+.nd{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.nd:not(:last-child)::after{content:"";position:absolute;top:22px;left:calc(50% + 24px);right:calc(-50% + 24px);border-top:2px dashed var(--line)}
+.nd .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--tile-2);border:2px solid var(--line);color:var(--muted);position:relative;z-index:1;transition:transform .3s,background .3s,border-color .3s}
+.nd .lb{font-size:13px;font-weight:600;color:var(--muted);line-height:1.25;padding:0 4px}
+.nd.done .dot{border-color:var(--bar-c);color:var(--link)}
+.nd.done .lb{color:var(--ink)}
+.nd.on .dot{background:var(--cta);border-color:var(--cta);color:#fff;transform:scale(1.15);box-shadow:0 0 0 6px rgba(35,151,212,.22)}
+.nd.on .lb{color:var(--ink)}
+.detail{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;background:var(--tile-2);border-radius:18px;padding:18px 20px}
+@media (max-width:760px){.detail{grid-template-columns:1fr}}
+.detail .sn{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--link);margin:0}
+.detail h3{font-size:clamp(20px,2.4vw,26px);margin-top:4px;letter-spacing:-.03em}
+.detail .dx{color:var(--muted);margin-top:6px;font-size:15px}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:0}
+.facts dt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.facts dd{margin:2px 0 0;font-size:14px;font-weight:600}
+.dots{display:flex;flex-wrap:wrap;gap:6px}
+.dots button{font:inherit;font-size:12px;display:flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--tile);color:var(--muted);border-radius:999px;padding:4px 10px 4px 4px;cursor:pointer}
+.dots button b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--tile-2);font-size:11px}
+.dots button[aria-selected="true"]{color:var(--ink);border-color:var(--bar-c)}
+.dots button[aria-selected="true"] b{background:var(--cta);color:#fff}
+@media (max-width:560px){.dots button span{display:none}.dots button{padding:4px}}
+@media (prefers-reduced-motion:reduce){.nd .dot{transition:none}}
+
+.bars.stack{display:flex;gap:0;height:10px;background:transparent}
+.bars.stack i{height:10px;border-radius:0}
+.bars.stack i:first-child{border-radius:5px 0 0 5px}
+.bars.stack i:last-child{border-radius:0 5px 5px 0}
+.bars.stack i:only-child{border-radius:5px}
+.daysplit{display:grid;gap:10px;margin-top:10px}
+.daysplit .r{display:grid;grid-template-columns:52px minmax(0,1fr) 150px;gap:10px;align-items:center;font-size:14px}
+.daysplit .x{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.daysplit .x b{color:var(--ink)}
+
+/* uma linha por informação (ecrãs largos) */
+.tree .node.sm{min-width:200px}
+.kit{display:flex;align-items:center;gap:40px}.kit .note{margin:0;font-size:15px;line-height:1.6}
+@media (max-width:899px){.kit{display:block}}.tree .node.sm .role{letter-spacing:.04em}
+.detail .dx br{display:block}
+@media (min-width:900px){
+:is(.wrap p,.wrap .list li,.wrap td,.wrap th,.wrap dd,.wrap dt,.wrap h2,.wrap h3,.wrap .flow .s,.wrap .tl .t,.wrap .x){white-space:nowrap}
+}
+</style>
+<style>html,body{margin:0;padding:0}</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Secções">
+  <div class="wrap">
+    <div class="brand"><img class="logo-l" src="naval-logo.png" alt="Logótipo Naval"><img class="logo-d" src="naval-logo-escuro.png" alt="Logótipo Naval">RTM Mobile Sales</div>
+    <div class="links">
+      <a href="#percurso">Percurso</a><a href="#vendedores">RTM vs. fora</a><a href="#rtm">No RTM</a><a href="#solucao">Solução</a><a href="#procedimento">Procedimento</a><a href="#clientes">Clientes</a><a href="#retorno">Retorno</a><a href="#expansao">Expansão</a><a href="#estado">Estado</a>
+    </div>
+  </div>
+</nav>
+
+<header class="band dark hero" id="resumo">
+  <div class="wrap">
+    <div class="hgrid">
+      <div>
+        <img class="hero-logo" src="naval-logo-escuro.png" alt="Logótipo Naval">
+        <p class="eyebrow">Grupo Naval Angola · Projectos Digitais</p>
+        <h1>RTM</h1>
+        <p class="tag grad">A venda, no acto.</p>
+        <p class="lead">A venda porta a porta do grupo passou a ser digital.<br>Ponto de situação, do arranque à operação no terreno.</p>
+        <p class="meta"><b>Dados a 22 de Outubro de 2026</b> · Direcção Comercial Internacional · Confidencial</p>
+      </div>
+      <div class="stage"><img src="ecra-rtm.jpg" alt="Ecrã real do smartphone RTM: logótipo Naval, RTM Mobile Sales e as duas aplicações de venda"><p class="real"><span class="live"></span>Ecrã real · a aplicação como está instalada<br>e a funcionar nos smartphones das 11 rotas<br>Gestão central: o vendedor só acede a estas duas aplicações</p></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><p class="v num">11</p><p class="l">Rotas activas</p></div>
+      <div class="stat"><p class="v num grad">100%</p><p class="l">Vendas pelo RTM a 22/10</p></div>
+      <div class="stat"><p class="v num">861</p><p class="l">Clientes registados</p></div>
+      <div class="stat"><p class="v num">≈ 651</p><p class="l">Rotas em 2030</p></div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="porque">
+  <div class="wrap">
+    <div class="grid">
+      <div class="s7" style="min-width:0">
+        <div class="head" style="text-align:left;margin-left:0"><p class="kicker">Porquê o RTM</p><h2>Do papel ao acto da venda.</h2></div>
+        <div class="tile tbl">
+          <table>
+            <thead><tr><th>Dimensão</th><th>Modelo manual</th><th>Modelo RTM</th></tr></thead>
+            <tbody>
+              <tr><td>Pedido</td><td class="was">Requisição em papel</td><td class="now">Rota do dia na aplicação</td></tr>
+              <tr><td>Intervenientes</td><td class="was">9 no ciclo de venda</td><td class="now">3 no ciclo de venda</td></tr>
+              <tr><td>Facturação</td><td class="was">D+1, após conferência</td><td class="now">Documento no acto da venda</td></tr>
+              <tr><td>Stock</td><td class="was">Reconciliação manual</td><td class="now">Visível no RTM no acto<br><span class="pill next" style="margin-top:4px">2.ª fase</span><span style="font-weight:400;color:var(--muted);font-size:13px">reconciliação com o SAP</span></td></tr>
+              <tr><td>Tempo por venda</td><td class="was">Cerca de 18 minutos</td><td class="now">Meta: 10 minutos</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="s5" style="min-width:0" id="percurso">
+        <div class="head" style="text-align:left;margin-left:0"><p class="kicker">Percurso · planeado vs. real</p><h2>Em operação desde 20/10.</h2></div>
+        <div class="tile">
+          <div class="tl">
+            <div class="row"><span class="d">15/07</span><span class="t">Kick-off e pagamentos do arranque</span></div>
+            <div class="row"><span class="d">07/08</span><span class="t">Sistemas instalados e testados</span></div>
+            <div class="row"><span class="d">28/08</span><span class="t">Catálogo de 45 referências preparado</span></div>
+            <div class="row pl"><span class="d">21/09</span><span class="t">Arranque previsto no plano</span></div>
+            <div class="row"><span class="d">06/10</span><span class="t">Início do registo de clientes</span></div>
+            <div class="row"><span class="d">20/10</span><span class="t">1.as vendas no RTM, também facturadas no SAP</span></div>
+            <div class="row hi"><span class="d">21/10</span><span class="t">Transição: 39% das vendas no RTM · +29 dias</span></div>
+            <div class="row hi"><span class="d">22/10</span><span class="t">1.º dia com 100% das vendas no RTM</span></div>
+            <div class="row pl"><span class="d">31/12</span><span class="t">Meta: 10.000 clientes registados</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band dark" id="vendedores">
+  <div class="wrap side">
+    <div class="mega">
+      <p class="kicker">Vendas via RTM e fora do RTM · 20 a 22/10</p>
+      <p class="v num grad">100%</p>
+      <p class="cap">das vendas passaram pelo RTM a 22/10,<br>depois de 19% a 20/10 e 39% a 21/10.</p>
+      <div class="cmp">
+        <div><p class="n num">19%</p><p class="t">no RTM a 20/10</p></div>
+        <div><p class="n num">39%</p><p class="t">no RTM a 21/10</p></div>
+        <div><p class="n num">100%</p><p class="t">no RTM a 22/10</p></div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="tile">
+        <h3>Por dia <span style="font-size:13px;font-weight:500;color:var(--muted)">M AKZ sem IVA</span></h3>
+        <div class="daysplit">
+          <div class="r"><span class="n">20/10</span><span class="bars stack"><i style="width:10.7%;background:var(--bar-c)"></i><i style="width:46.9%;background:var(--bar-b)"></i></span><span class="x"><b>2,75</b> + 12,06 = 14,81</span></div>
+          <div class="r"><span class="n">21/10</span><span class="bars stack"><i style="width:39.0%;background:var(--bar-c)"></i><i style="width:61.0%;background:var(--bar-b)"></i></span><span class="x"><b>10,03</b> + 15,69 = 25,72</span></div>
+          <div class="r"><span class="n">22/10</span><span class="bars stack"><i style="width:30.7%;background:var(--bar-c)"></i></span><span class="x"><b>7,90</b> + 0 = 7,90</span></div>
+        </div>
+      </div>
+      <div class="tile">
+        <h3>Por vendedor, 21/10 <span style="font-size:13px;font-weight:500;color:var(--muted)">% no RTM · total M AKZ sem IVA</span></h3>
+        <div class="legend" style="margin-top:8px"><span><i style="background:var(--bar-c)"></i>Via RTM</span><span><i style="background:var(--bar-b)"></i>Fora do RTM</span></div>
+        <div class="hb" role="img" aria-label="Vendas por vendedor a 21 de Outubro, separadas entre RTM e fora do RTM">
+<div class="r"><span class="n">Rosa Vemba</span><span class="bars stack"><i style="width:19.2%;background:var(--bar-c)"></i><i style="width:4.0%;background:var(--bar-b)"></i></span><span class="x"><b>83%</b> · 1,47</span></div>
+<div class="r"><span class="n">Nelson Moisés</span><span class="bars stack"><i style="width:13.7%;background:var(--bar-c)"></i><i style="width:4.9%;background:var(--bar-b)"></i></span><span class="x"><b>74%</b> · 1,18</span></div>
+<div class="r"><span class="n">Cristina Sachuma</span><span class="bars stack"><i style="width:16.6%;background:var(--bar-c)"></i><i style="width:8.4%;background:var(--bar-b)"></i></span><span class="x"><b>66%</b> · 1,58</span></div>
+<div class="r"><span class="n">Jocel Prata</span><span class="bars stack"><i style="width:21.0%;background:var(--bar-c)"></i><i style="width:16.8%;background:var(--bar-b)"></i></span><span class="x"><b>56%</b> · 2,39</span></div>
+<div class="r"><span class="n">Daniel Tekeste</span><span class="bars stack"><i style="width:20.8%;background:var(--bar-c)"></i><i style="width:21.0%;background:var(--bar-b)"></i></span><span class="x"><b>50%</b> · 2,65</span></div>
+<div class="r"><span class="n">Olindo Baião</span><span class="bars stack"><i style="width:6.6%;background:var(--bar-c)"></i><i style="width:9.4%;background:var(--bar-b)"></i></span><span class="x"><b>41%</b> · 1,01</span></div>
+<div class="r"><span class="n">Robel Tewelde</span><span class="bars stack"><i style="width:23.0%;background:var(--bar-c)"></i><i style="width:36.3%;background:var(--bar-b)"></i></span><span class="x"><b>39%</b> · 3,75</span></div>
+<div class="r"><span class="n">Andréa Santos</span><span class="bars stack"><i style="width:8.1%;background:var(--bar-c)"></i><i style="width:16.5%;background:var(--bar-b)"></i></span><span class="x"><b>33%</b> · 1,56</span></div>
+<div class="r"><span class="n">Efrem Eyob</span><span class="bars stack"><i style="width:22.2%;background:var(--bar-c)"></i><i style="width:77.8%;background:var(--bar-b)"></i></span><span class="x"><b>22%</b> · 6,33</span></div>
+<div class="r"><span class="n">Nahom Teame</span><span class="bars stack"><i style="width:7.2%;background:var(--bar-c)"></i><i style="width:31.2%;background:var(--bar-b)"></i></span><span class="x"><b>19%</b> · 2,44</span></div>
+<div class="r"><span class="n">Awet Haile</span><span class="bars stack"><i style="width:0.0%;background:var(--bar-c)"></i><i style="width:21.3%;background:var(--bar-b)"></i></span><span class="x"><b>0%</b> · 1,35</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="rtm">
+  <div class="wrap">
+    <div class="head"><p class="kicker">Vendas registadas no RTM · 20 a 22/10</p><h2>20,67 M AKZ sem IVA em 3 dias.</h2><p class="sub">23,57 M AKZ com IVA (14%) · 60 documentos · 56 clientes · 11 rotas a vender.<br>Documentos emitidos no acto e comunicados à AGT por facturação digital.<br>As vendas de 20/10 foram também facturadas no SAP a 21/10.</p></div>
+    <div class="grid">
+      <div class="stack s4">
+        <div class="tile big"><p class="lab">Facturado no RTM, sem IVA</p><p class="v num grad">20,67<small>M AKZ</small></p><p class="note">Com IVA: 23,57 M AKZ<br>Média: 6,89 M AKZ por dia</p></div>
+        <div class="tile big"><p class="lab">Documentos · clientes</p><p class="v num">60 · 56</p><p class="note">Média: 345 mil AKZ<br>por documento, sem IVA</p></div>
+        <div class="tile big"><p class="lab">Pago no acto</p><p class="v num good">97%</p><p class="note">59 facturas-recibo: 19,99 M<br>1 factura a crédito: 0,68 M</p></div>
+      </div>
+      <div class="tile s3">
+        <h3>Por dia</h3>
+        <div class="legend" style="margin-top:6px"><span>M AKZ sem IVA · n.º de documentos</span></div>
+        <div class="cols" style="--n:3" role="img" aria-label="Vendas no RTM por dia, sem IVA: 2,75 M AKZ a 20/10, 10,03 M a 21/10 e 7,90 M a 22/10"><div class="col"><span class="v k">2,75</span><div class="b" style="height:24.1%;background:var(--bar-c)"></div></div><div class="col"><span class="v k">10,03</span><div class="b" style="height:88.0%;background:var(--bar-c)"></div></div><div class="col"><span class="v k">7,90</span><div class="b" style="height:69.3%;background:var(--bar-c)"></div></div></div>
+        <div class="xl" style="--n:3"><span>20/10 · 10</span><span class="k">21/10 · 36</span><span>22/10 · 14</span></div>
+      </div>
+      <div class="tile s5">
+        <h3>Por rota</h3>
+        <div class="legend" style="margin-top:6px"><span>Total de 20 a 22/10, M AKZ sem IVA</span></div>
+        <div class="hb" role="img" aria-label="Vendas no RTM por rota, de 20 a 22 de Outubro">
+<div class="r"><span class="n">1009 · Efrem Eyob</span><span class="bars"><i style="width:100.0%;background:var(--bar-c)"></i></span><span class="x"><b>5,30</b> · 3 doc.</span></div>
+<div class="r"><span class="n">1004 · Nelson Moisés</span><span class="bars"><i style="width:68.7%;background:var(--bar-c)"></i></span><span class="x"><b>3,64</b> · 14 doc.</span></div>
+<div class="r"><span class="n">1003 · Jocel Prata</span><span class="bars"><i style="width:41.5%;background:var(--bar-c)"></i></span><span class="x"><b>2,20</b> · 11 doc.</span></div>
+<div class="r"><span class="n">1006 · Rosa Vemba</span><span class="bars"><i style="width:41.0%;background:var(--bar-c)"></i></span><span class="x"><b>2,17</b> · 7 doc.</span></div>
+<div class="r"><span class="n">1011 · Robel Tewelde</span><span class="bars"><i style="width:37.7%;background:var(--bar-c)"></i></span><span class="x"><b>2,00</b> · 3 doc.</span></div>
+<div class="r"><span class="n">1008 · Daniel Tekeste</span><span class="bars"><i style="width:24.8%;background:var(--bar-c)"></i></span><span class="x"><b>1,32</b> · 1 doc.</span></div>
+<div class="r"><span class="n">1002 · Cristina Sachuma</span><span class="bars"><i style="width:19.9%;background:var(--bar-c)"></i></span><span class="x"><b>1,05</b> · 5 doc.</span></div>
+<div class="r"><span class="n">1005 · Olindo Baião</span><span class="bars"><i style="width:18.3%;background:var(--bar-c)"></i></span><span class="x"><b>0,97</b> · 7 doc.</span></div>
+<div class="r"><span class="n">1001 · Andréa Santos</span><span class="bars"><i style="width:17.5%;background:var(--bar-c)"></i></span><span class="x"><b>0,93</b> · 6 doc.</span></div>
+<div class="r"><span class="n">1007 · Awet Haile</span><span class="bars"><i style="width:12.3%;background:var(--bar-c)"></i></span><span class="x"><b>0,65</b> · 1 doc.</span></div>
+<div class="r"><span class="n">1010 · Nahom Teame</span><span class="bars"><i style="width:8.6%;background:var(--bar-c)"></i></span><span class="x"><b>0,46</b> · 2 doc.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="vendas">
+  <div class="wrap">
+    <div class="head"><p class="kicker">Vendas 2026</p><h2>Real e forecast, até 31 de Dezembro.</h2><p class="lead">O RTM acrescenta 576 M AKZ às vendas de 2026, entre Outubro e Dezembro.</p></div>
+    <div class="grid">
+      <div class="tile s8">
+        <div class="phz" style="--n:12"><span class="pr">Real · Jan–Jun</span><span class="pf">Forecast · Jul–Dez</span></div>
+        <div class="cols tall" style="--n:12" role="img" aria-label="Vendas mensais 2026: real de Janeiro a Junho; forecast de Julho a Dezembro; ganho do RTM de 24, 222 e 330 M AKZ em Outubro, Novembro e Dezembro">
+          <div class="col"><span class="v">286</span><div class="b" style="height:28.6%;background:var(--bar-a)"></div></div>
+          <div class="col"><span class="v">375</span><div class="b" style="height:37.5%;background:var(--bar-a)"></div></div>
+          <div class="col"><span class="v">383</span><div class="b" style="height:38.3%;background:var(--bar-a)"></div></div>
+          <div class="col"><span class="v">458</span><div class="b" style="height:45.8%;background:var(--bar-a)"></div></div>
+          <div class="col"><span class="v">376</span><div class="b" style="height:37.6%;background:var(--bar-a)"></div></div>
+          <div class="col"><span class="v k">478</span><div class="b" style="height:47.8%;background:var(--bar-a)"></div></div>
+          <div class="col fc"><span class="v">497</span><div class="b" style="height:49.7%;background:var(--bar-b)"></div></div>
+          <div class="col"><span class="v">526</span><div class="b" style="height:52.6%;background:var(--bar-b)"></div></div>
+          <div class="col"><span class="v">556</span><div class="b" style="height:55.6%;background:var(--bar-b)"></div></div>
+          <div class="col rtm"><span class="g">+24</span><span class="v">610</span><div class="b" style="height:2.4%;background:var(--bar-c)"></div><div class="b" style="height:58.6%;background:var(--bar-b)"></div></div>
+          <div class="col"><span class="g">+222</span><span class="v">837</span><div class="b" style="height:22.2%;background:var(--bar-c)"></div><div class="b" style="height:61.5%;background:var(--bar-b)"></div></div>
+          <div class="col"><span class="g">+330</span><span class="v k">975</span><div class="b" style="height:33.0%;background:var(--bar-c)"></div><div class="b" style="height:64.5%;background:var(--bar-b)"></div></div>
+        </div>
+        <div class="xl" style="--n:12"><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span class="k">Out</span><span>Nov</span><span>Dez</span></div>
+        <div class="legend" style="margin-top:12px"><span><i style="background:var(--bar-a)"></i>Real</span><span><i style="background:var(--bar-b)"></i>Forecast sem RTM</span><span><i style="background:var(--bar-c)"></i>Ganho RTM (desde 20/10)</span><span>M AKZ</span></div>
+        <div class="kpis">
+          <div class="kp"><p class="lab">Real</p><p class="n">2.356</p><p class="sub">Jan–Jun · M AKZ</p></div>
+          <div class="kp"><span class="op">+</span><p class="lab">Forecast sem RTM</p><p class="n">3.424</p><p class="sub">Jul–Dez · M AKZ</p></div>
+          <div class="kp gain"><span class="op">+</span><p class="lab">Ganho RTM</p><p class="n">576</p><p class="sub">Out–Dez · M AKZ</p></div>
+          <div class="kp tot"><span class="op">=</span><p class="lab">Total 2026</p><p class="n">6.356</p><p class="sub">com RTM · M AKZ</p></div>
+        </div>
+      </div>
+      <div class="stack s4">
+        <div class="tile big"><p class="lab">2026 com RTM vs. sem RTM</p><p class="v num">6.356<small>M AKZ</small></p><p class="note">Sem RTM: 5.780 M · <b>+10%</b></p></div>
+        <div class="tile big"><p class="lab">Ganho do RTM em 2026</p><p class="v num grad">+576<small>M AKZ</small></p><p class="note">Plano: +973 M com arranque a 21/09.<br>O arranque a 20/10 adiou 397 M.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="solucao">
+  <div class="wrap">
+    <div class="head"><p class="kicker">A solução</p><h2>O que muda no terreno.</h2></div>
+    <div class="grid">
+      <div class="tile s4 feat"><div class="ic" aria-hidden="true"></div><h3>No cliente</h3><p class="txt">Vende, cobra e entrega o documento na hora.<br>Factura comunicada à AGT (facturação digital).</p></div>
+      <div class="tile s4 feat"><div class="ic" aria-hidden="true"></div><h3>No mesmo dia</h3><p class="txt">Vendas, stock e novos clientes visíveis.<br>Sem papel.</p></div>
+      <div class="tile s4 feat"><div class="ic" aria-hidden="true"></div><h3>Para a gestão</h3><p class="txt">Controlo por rota, promotor e cliente.<br>Smartphones geridos de forma central.</p></div>
+      <div class="tile s12 big kit"><div><p class="lab">Kits de venda no terreno</p><p class="v num grad">11</p></div><p class="note">Um por rota: smartphone com as aplicações de venda e impressora portátil.<br>Smartphones geridos de forma central: o vendedor só tem acesso às duas aplicações de venda.<br>2.ª fase: back-office do RTM integrado com o SAP do grupo.</p></div>
+    </div>
+    <div class="head inner" id="mercado"><p class="kicker">Mercado e operação</p><h2>45 referências. 11 rotas.</h2></div>
+    <div class="grid">
+      <div class="tile s6 tbl">
+        <h3>Catálogo por empresa</h3>
+        <div class="seg" aria-hidden="true"><span style="flex:19;background:var(--bar-a)"></span><span style="flex:18;background:var(--bar-c)"></span><span style="flex:8;background:var(--bar-b)"></span></div>
+        <table>
+          <thead><tr><th>Empresa</th><th class="r">Ref.</th><th>Famílias</th><th class="r">PVP (AKZ)</th></tr></thead>
+          <tbody>
+            <tr><td><b>Foodtec</b></td><td class="r num">19</td><td>Massas, farinha, arroz</td><td class="r num">2.600–25.000</td></tr>
+            <tr><td><b>Higitec</b></td><td class="r num">18</td><td>Fraldas, sabão</td><td class="r num">7.500–31.800</td></tr>
+            <tr><td><b>Refitec</b></td><td class="r num">8</td><td>Óleos alimentares</td><td class="r num">21.000–54.000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tile s6">
+        <h3>Operação no terreno</h3>
+        <ul class="list">
+          <li><b>11 rotas de venda,</b> 1001 a 1011, uma por vendedor, com 11 kits no terreno.</li>
+          <li><b>2 armazéns RTM:</b> Food dentro da Foodtec e Non-Food dentro da Higitec.</li>
+          <li><b>Dados móveis:</b> Unitel e, a seguir, também Africell, com balanceamento<br>entre as duas redes para os comerciais terem sempre dados.</li>
+          <li><b>2.ª fase:</b> 11 rotas de distribuição, com o motorista separado do vendedor.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="procedimento">
+  <div class="wrap">
+    <div class="head"><p class="kicker">Procedimento de venda</p><h2>Da fábrica ao cliente.</h2><p class="sub">Escolha a fase e avance passo a passo, ou carregue em Reproduzir.</p></div>
+    <div class="proc" id="proc">
+      <div class="proc-top">
+        <div class="seg-tabs" role="tablist" id="proc-tabs"></div>
+        <div class="proc-ctl">
+          <button type="button" class="pbtn" id="proc-prev"></button>
+          <button type="button" class="pbtn play" id="proc-play"></button>
+          <button type="button" class="pbtn" id="proc-next"></button>
+        </div>
+      </div>
+      <p class="proc-intro" id="proc-intro"></p>
+      <div class="track-wrap"><ol class="track" id="proc-track"></ol></div>
+      <div class="detail" id="proc-detail" aria-live="polite"></div>
+      <div class="dots" id="proc-dots" role="tablist"></div>
+    </div>
+<script>
+(function(){
+var T={
+ pt:{tabs:['Hoje · 1.ª fase','2.ª fase'],prev:'Anterior',next:'Seguinte',play:'Reproduzir',pause:'Pausa',step:'Passo',of:'de',who:'Quem',sys:'Sistema',doc:'Documento',when:'Quando',
+  intro:['Da compra às fábricas à venda no cliente, com venda e entrega feitas pelo mesmo vendedor.','PO feita no terreno, venda e entrega separadas e SAP integrado com o RTM. Optimiza o custo da rota de venda face ao custo da entrega.']},
+ en:{tabs:['Today · phase 1','Phase 2'],prev:'Previous',next:'Next',play:'Play',pause:'Pause',step:'Step',of:'of',who:'Who',sys:'System',doc:'Document',when:'When',
+  intro:['From purchase at the factories to the sale at the customer, with the same rep selling and delivering.','POs created in the field, sales and delivery separated and SAP integrated with RTM. This optimises the cost of the sales route against the cost of delivery.']}
+};
+var P=[
+ {nodes:{pt:['Fábrica','Naval Trading · SAP','Armazéns RTM','Rotas · vendedor','Cliente','Back-office RTM'],en:['Factory','Naval Trading · SAP','RTM warehouses','Routes · rep','Customer','RTM back-office']},
+  steps:[
+   {n:[1,0],pt:['PO à fábrica','A Naval Trading emite uma ordem de compra (PO) à fábrica onde quer comprar: Foodtec, Refitec ou Higitec.','Naval Trading','SAP','PO · Purchase Order','Conforme as necessidades de stock'],
+            en:['PO to the factory','Naval Trading issues a purchase order (PO) to the factory it buys from: Foodtec, Refitec or Higitec.','Naval Trading','SAP','PO · Purchase Order','As stock is needed']},
+   {n:[0],pt:['GI na fábrica','A fábrica emite a GI para dar saída da mercadoria do seu armazém e envia o documento à Naval Trading.','Fábrica','SAP','GI · Goods Issue','Após a PO'],
+            en:['GI at the factory','The factory issues the GI to release the goods from its warehouse and sends the document to Naval Trading.','Factory','SAP','GI · Goods Issue','After the PO']},
+   {n:[0,1],pt:['GR na Naval Trading','A Naval Trading converte a PO em GR e a mercadoria dá entrada no armazém correspondente: REFITEC/FOODTEC PIV - FOOD ou HIGITEC PIV - NON FOOD.','Naval Trading','SAP','GR · Goods Receipt','Na recepção da mercadoria'],
+            en:['GR at Naval Trading','Naval Trading converts the PO into a GR and the goods enter the matching warehouse: REFITEC/FOODTEC PIV - FOOD or HIGITEC PIV - NON FOOD.','Naval Trading','SAP','GR · Goods Receipt','On receipt of the goods']},
+   {n:[1,2],pt:['Transferência SAP → RTM','É emitido o documento de transferência SAP to RTM, que consome a totalidade do stock no SAP, e é lançada a entrada nos armazéns RTM correspondentes. Nesta fase é manual.','Naval Trading','SAP → RTM, manual','Transferência SAP to RTM · entrada no RTM','Após a GR'],
+            en:['SAP → RTM transfer','The SAP to RTM transfer document is issued, consuming all the stock in SAP, and the entry is posted in the matching RTM warehouses. Manual in this phase.','Naval Trading','SAP → RTM, manual','SAP to RTM transfer · RTM entry','After the GR']},
+   {n:[2,3],pt:['Transferência e carga das rotas','No fim do dia, o stock passa dos armazéns RTM para os armazéns das rotas, conforme as PO dos vendedores, e os carros ficam carregados para o dia seguinte.','Logística e Distribuição','RTM','PO do vendedor · transferência armazém → rota','15:30 às 17:00 · saída no dia seguinte até às 07:30'],
+            en:['Route transfer and loading','At the end of the day, stock moves from the RTM warehouses to the route warehouses, according to the reps’ POs, and the vehicles are loaded for the next day.','Logistics and Distribution','RTM','Rep PO · warehouse → route transfer','15:30 to 17:00 · out the next day by 07:30']},
+   {n:[3,4],pt:['Venda no cliente','Com o dia já aberto no sistema: registo do cliente, venda na aplicação, pagamento em numerário ou TPA e documento impresso na hora.','Vendedor','Aplicação RTM e impressora portátil','Factura-recibo · factura a crédito nas rotas autorizadas','Durante a rota'],
+            en:['Sale at the customer','With the day already open in the system: customer registration, sale in the app, payment in cash or by card and document printed on the spot.','Sales rep','RTM app and portable printer','Invoice-receipt · credit invoice on authorised routes','During the route']},
+   {n:[3],pt:['Transferência entre rotas','Quando há uma limitação com um vendedor ou uma viatura, a mercadoria pode ser transferida de uma rota para outra, para que as vendas nunca parem.','Logística e Distribuição','RTM','Transferência rota → rota','Sempre que necessário'],
+            en:['Transfer between routes','When a rep or a vehicle is unavailable, goods can be transferred from one route to another so that sales never stop.','Logistics and Distribution','RTM','Route → route transfer','Whenever needed']},
+   {n:[5],pt:['Validação automática de clientes','O RTM valida os novos clientes com o portal da AGT. Se a informação for válida, o cliente fica activo; se não for, fica pendente a aguardar intervenção humana.','Sistema, com a Validação de Dados nos pendentes','RTM ↔ portal da AGT','Cliente activo ou pendente','De 1 em 1 minuto'],
+            en:['Automatic customer validation','RTM checks new customers against the AGT tax portal. If the details are valid, the customer becomes active; if not, it stays pending until someone reviews it.','System, with Data Validation for pending cases','RTM ↔ AGT tax portal','Active or pending customer','Every minute']},
+   {n:[3],pt:['Fecho do dia na tesouraria','Ao chegar ao escritório, o vendedor faz o fecho do dia na tesouraria e entrega os documentos e o dinheiro. O sistema abre automaticamente o dia seguinte.','Vendedor e Tesouraria','RTM','Fecho do dia · documentos e numerário','No regresso ao escritório'],
+            en:['End-of-day close at the treasury','On arriving at the office, the rep closes the day at the treasury, handing in the documents and the cash. The system opens the next day automatically.','Sales rep and Treasury','RTM','End-of-day close · documents and cash','On return to the office']}
+  ]},
+ {nodes:{pt:['Vendedor','Cliente','Back-office RTM','Armazém','Motorista','SAP ↔ RTM'],en:['Sales rep','Customer','RTM back-office','Warehouse','Driver','SAP ↔ RTM']},
+  steps:[
+   {n:[0,1],pt:['Dia D · PO no terreno','O vendedor faz a PO directamente no smartphone, no cliente, e recebe o pagamento. A PO segue automaticamente para o back-office.','Vendedor','Aplicação RTM','PO do vendedor · pagamento','Dia D'],
+            en:['Day D · PO in the field','The rep creates the PO directly on the smartphone, at the customer, and collects payment. The PO goes to the back-office automatically.','Sales rep','RTM app','Rep PO · payment','Day D']},
+   {n:[2],pt:['Validação do pagamento','O back-office confirma a entrada do pagamento em conta. Só depois a PO é enviada ao armazém para dar seguimento.','Back-office','Back-office RTM','Pagamento confirmado · PO enviada ao armazém','Após a entrada do pagamento em conta'],
+            en:['Payment validation','The back-office confirms the payment has reached the account. Only then is the PO sent to the warehouse to proceed.','Back-office','RTM back-office','Payment confirmed · PO sent to the warehouse','Once the payment reaches the account']},
+   {n:[3],pt:['Processamento no armazém','O armazém prepara a mercadoria para sair na próxima rota de entrega.','Armazém Food ou Non-Food','RTM','Carga da rota de entrega','Antes da rota de entrega'],
+            en:['Warehouse processing','The warehouse prepares the goods for the next delivery route.','Food or Non-food warehouse','RTM','Delivery route load','Before the delivery route']},
+   {n:[4,1],pt:['Dia D+1 · Entrega','O motorista entrega ao cliente e emite a factura no momento, porque o pagamento já entrou em conta.','Motorista','Aplicação RTM e impressora portátil','Factura emitida na entrega','Dia D+1'],
+            en:['Day D+1 · Delivery','The driver delivers to the customer and issues the invoice on the spot, as payment has already reached the account.','Driver','RTM app and portable printer','Invoice issued on delivery','Day D+1']},
+   {n:[2,5],pt:['SAP ↔ RTM automático','A transferência do SAP para o RTM e a reconciliação do stock passam a ser automáticas e transparentes.','Sistemas','Back-office RTM ↔ SAP','Stock actualizado nos dois sistemas','Automático'],
+            en:['Automatic SAP ↔ RTM','The SAP to RTM transfer and stock reconciliation become automatic and seamless.','Systems','RTM back-office ↔ SAP','Stock updated in both systems','Automatic']}
+  ]}
+];
+var ph=0,st=0,timer=null,L='pt';
+var $=function(id){return document.getElementById(id);};
+function lang(){return (document.documentElement.lang||'pt').slice(0,2)==='en'?'en':'pt';}
+function esc(t){var d=document.createElement('span');d.textContent=t;return d.innerHTML;}
+function render(){
+  L=lang(); var t=T[L], p=P[ph], s=p.steps[st], d=s[L];
+  $('proc-tabs').innerHTML=t.tabs.map(function(x,i){return '<button type="button" role="tab" aria-selected="'+(i===ph)+'" data-ph="'+i+'">'+esc(x)+'</button>';}).join('');
+  $('proc-intro').textContent=t.intro[ph];
+  $('proc-prev').textContent='← '+t.prev; $('proc-next').textContent=t.next+' →';
+  $('proc-play').textContent=timer?('❚❚ '+t.pause):('▶ '+t.play);
+  $('proc-prev').disabled=st===0; $('proc-next').disabled=st===p.steps.length-1&&!timer;
+  var done={}; for(var k=0;k<st;k++)p.steps[k].n.forEach(function(i){done[i]=1;});
+  $('proc-track').innerHTML=p.nodes[L].map(function(x,i){
+    var on=s.n.indexOf(i)>=0, cls=on?'on':(done[i]?'done':'');
+    return '<li class="nd '+cls+'"><span class="dot">'+(i+1)+'</span><span class="lb">'+esc(x)+'</span></li>';}).join('');
+  $('proc-detail').innerHTML='<div class="dl"><p class="sn">'+t.step+' '+(st+1)+' '+t.of+' '+p.steps.length+'</p><h3>'+esc(d[0])+'</h3><p class="dx">'+esc(d[1]).replace(/\. /g,'.<br>').replace(/: /g,':<br>')+'</p></div>'+
+    '<dl class="facts"><div><dt>'+t.who+'</dt><dd>'+esc(d[2])+'</dd></div><div><dt>'+t.sys+'</dt><dd>'+esc(d[3])+'</dd></div><div><dt>'+t.doc+'</dt><dd>'+esc(d[4])+'</dd></div><div><dt>'+t.when+'</dt><dd>'+esc(d[5])+'</dd></div></dl>';
+  $('proc-dots').innerHTML=p.steps.map(function(x,i){return '<button type="button" role="tab" aria-selected="'+(i===st)+'" data-st="'+i+'" title="'+esc(x[L][0])+'"><b>'+(i+1)+'</b><span>'+esc(x[L][0])+'</span></button>';}).join('');
+}
+function go(i){var n=P[ph].steps.length;st=(i+n)%n;render();}
+function stop(){if(timer){clearInterval(timer);timer=null;}}
+$('proc-tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;stop();ph=+b.getAttribute('data-ph');st=0;render();});
+$('proc-dots').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;stop();go(+b.getAttribute('data-st'));});
+$('proc-prev').addEventListener('click',function(){stop();go(st-1);});
+$('proc-next').addEventListener('click',function(){stop();go(st+1);});
+$('proc-play').addEventListener('click',function(){
+  if(timer){stop();render();return;}
+  if(st===P[ph].steps.length-1)st=-1;
+  timer=setInterval(function(){if(st>=P[ph].steps.length-1){stop();render();return;}go(st+1);},2600);
+  go(st+1);
+});
+new MutationObserver(function(){if(lang()!==L)render();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+render();
+})();
+</script>
+  </div>
+</section>
+
+<section class="band" id="clientes">
+  <div class="wrap">
+    <div class="head"><p class="kicker">Registo de clientes</p><h2>861 clientes em 13 dias úteis.</h2><p class="sub">Meta: 10.000 até 31 de Dezembro de 2026, só com as 11 rotas actuais.</p></div>
+    <div class="grid">
+      <div class="stack s4">
+        <div class="tile big"><p class="lab">Da meta de 10.000</p><p class="v num grad">8,6%</p><p class="note">792 activos · 66 pendentes de validação</p></div>
+        <div class="tile big"><p class="lab">Ritmo necessário</p><p class="v num warn">154<small>por dia</small></p><p class="note">15 por rota e por dia, nos 57 dias restantes</p></div>
+      </div>
+      <div class="tile s8">
+        <div class="legend"><span><i style="background:var(--bar-b)"></i>Só registo</span><span><i style="background:var(--bar-c)"></i>Registo e venda</span><span>Novos clientes por dia, Outubro</span></div>
+        <div class="chart-wrap">
+          <div class="cols" style="--n:14" role="img" aria-label="Novos clientes por dia de 6 a 22 de Outubro, contra a meta de 154 por dia">
+            <div class="col"><span class="v">1</span><div class="b" style="height:1%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">10</span><div class="b" style="height:5.6%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">35</span><div class="b" style="height:19.4%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">63</span><div class="b" style="height:35%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">55</span><div class="b" style="height:30.6%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">94</span><div class="b" style="height:52.2%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">69</span><div class="b" style="height:38.3%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">108</span><div class="b" style="height:60%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">77</span><div class="b" style="height:42.8%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">78</span><div class="b" style="height:43.3%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">19</span><div class="b" style="height:10.6%;background:var(--bar-b)"></div></div>
+            <div class="col"><span class="v">40</span><div class="b" style="height:22.2%;background:var(--bar-c)"></div></div>
+            <div class="col"><span class="v k">115</span><div class="b" style="height:63.9%;background:var(--bar-c)"></div></div>
+            <div class="col"><span class="v k">97</span><div class="b" style="height:53.9%;background:var(--bar-c)"></div></div>
+          </div>
+          <div class="goal" style="bottom:85.6%"><span>Meta 154</span></div>
+        </div>
+        <div class="xl" style="--n:14"><span>06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>19</span><span>20</span><span class="k">21</span><span class="k">22</span></div>
+        <div class="flow" style="margin-top:14px;font-size:13px"><span class="s">Registo no terreno</span><span class="ar">→</span><span class="s">Validação automática<small>RTM ↔ portal da AGT, de 1 em 1 minuto</small></span><span class="ar">→</span><span class="s hl">Válido: cliente activo</span><span class="s">Não válido: pendente<small>aguarda intervenção humana</small></span></div>
+      </div>
+    </div>
+    <div class="head inner" id="equipa"><p class="kicker">Organização</p><h2>Equipa de gestão do RTM.</h2><p class="sub">Arranque às 07:15 e saída para rota até às 07:30. Balanço do dia às 15:00.<br>Carga das rotas para o dia seguinte das 15:30 às 17:00.</p></div>
+    <div class="tree" role="group" aria-label="Organigrama de gestão do RTM">
+      <ul>
+        <li><div class="node top"><p class="role">Coordenador de Operações</p><p class="who">Michael Samson</p></div>
+          <ul>
+            <li><div class="node"><p class="role">Validação de Dados</p><p class="who">Sirak Kahsay</p></div>
+              <ul>
+                <li><div class="node sm"><p class="role">Logística</p><p class="who">Teresa Gomes</p></div></li>
+                <li><div class="node sm"><p class="role">Logística e Distribuição</p><p class="who">Manuel Queia</p></div></li>
+              </ul>
+            </li>
+            <li><div class="node"><p class="role">Coordenador Regional</p><p class="who">Nathan Alemayehu</p></div>
+              <ul>
+                <li><div class="node sm"><p class="role">Equipa de terreno</p><p class="who">11 comerciais</p></div></li>
+                <li><div class="node sm"><p class="role">Afectos aos comerciais</p><p class="who">11 motoristas</p></div></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band dark" id="retorno">
+  <div class="wrap">
+    <div class="side">
+      <div class="mega">
+        <p class="kicker">Economia e retorno · Valeu a pena?</p>
+        <p class="v num grad">97%</p>
+        <p class="cap">do ritmo de vendas anterior,<br>nos três primeiros dias de transição.</p>
+        <p class="kicker" style="margin-top:8px;font-weight:500">16,1 M AKZ/dia de 20 a 22/10, no RTM e fora do RTM<br>16,6 M AKZ por dia útil no 1.º semestre · sem IVA</p>
+      </div>
+      <div class="tile">
+        <h3>Cenário do plano: saldo acumulado</h3>
+        <p class="txt">Margem extra do RTM (15%) menos investimento, em M AKZ.</p>
+        <div class="pb" style="margin-top:14px" role="img" aria-label="Saldo acumulado de Julho de 2026 a Março de 2027: negativo até Dezembro, positivo a partir de Janeiro de 2027">
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:59%"></i><span class="lb warn">−57</span></div></div>
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:66%"></i><span class="lb warn opt">−64</span></div></div>
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:73%"></i><span class="lb warn opt">−71</span></div></div>
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:76%"></i><span class="lb warn">−74</span></div></div>
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:49%"></i><span class="lb warn opt">−48</span></div></div>
+          <div class="c"><div class="up"></div><div class="dn"><i style="height:6%"></i><span class="lb warn">−6</span></div></div>
+          <div class="c"><div class="up"><span class="lb">+48</span><i style="height:23%"></i></div><div class="dn"></div></div>
+          <div class="c"><div class="up"><span class="lb opt">+104</span><i style="height:50%"></i></div><div class="dn"></div></div>
+          <div class="c"><div class="up"><span class="lb">+163</span><i style="height:78%"></i></div><div class="dn"></div></div>
+        </div>
+        <div class="xl" style="--n:9"><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span><span class="k">Jan 27</span><span>Fev</span><span>Mar</span></div>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:20px">
+      <div class="tile big s3"><p class="lab">Investimento no ano 1</p><p class="v num">135,5<small>M AKZ</small></p><p class="note">Capex 49,38 M (único)<br>Opex 21,54 M por trimestre</p></div>
+      <div class="tile big s3"><p class="lab">Para pagar o custo do RTM</p><p class="v num">+48<small>M AKZ/mês</small></p><p class="note">acima do nível de vendas anterior<br>Plano: 57 M por rota/mês (era 35,7)</p></div>
+      <div class="tile big s3"><p class="lab">Retorno, se o plano se cumprir</p><p class="v num grad">Jan 2027</p><p class="note">Cerca de 3 meses<br>após o arranque</p></div>
+      <div class="tile big s3"><p class="lab">Efeito de escala</p><p class="v num">−54%</p><p class="note">Custo por rota/mês: 652 mil AKZ<br>com 11 rotas · 299 mil com 30</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="expansao">
+  <div class="wrap">
+    <div class="head"><p class="kicker">Expansão</p><h2>De 11 a cerca de 651 rotas.</h2><p class="sub">No início de 2027, pelo menos 1 rota em cada uma das 21 províncias, para analisar e depois expandir.<br>Por fases, com decisão GO / HOLD / REPLAN em cada uma. Cenário revisto todos os trimestres.</p></div>
+    <div class="phases">
+      <div class="tile phase"><p class="k">Fase 0 · 2026</p><p class="v num">11 → 18</p><p class="txt">Luanda.<br>Piloto e estabilização.</p></div>
+      <div class="tile phase"><p class="k">Fase 1 · 2027</p><p class="v num">18 → 100</p><p class="txt">Início: ≥ 1 rota em cada<br>uma das 21 províncias.</p></div>
+      <div class="tile phase"><p class="k">Fase 2 · 2028</p><p class="v num">100 → 260</p><p class="txt">Expansão nas províncias<br>com melhores resultados.</p></div>
+      <div class="tile phase"><p class="k">Fase 3 · 2029</p><p class="v num">260 → 460</p><p class="txt">Reforço da cobertura<br>em todas as províncias.</p></div>
+      <div class="tile phase"><p class="k">Fase 4 · 2030</p><p class="v num grad">460 → 651</p><p class="txt">Cobertura das<br>21 províncias.</p></div>
+    </div>
+
+    <div class="head inner" id="estado"><p class="kicker">Estado e próximos passos</p><h2>Ponto de situação a 22 de Outubro.</h2></div>
+    <div class="grid">
+      <div class="tile s7 tbl">
+        <table>
+          <thead><tr><th>Frente</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Sistemas e equipamentos</td><td><span class="pill ok">Operacional</span>11 kits no terreno</td></tr>
+            <tr><td>Catálogo</td><td><span class="pill ok">Normalizado</span>45 referências</td></tr>
+            <tr><td>Equipa de gestão</td><td><span class="pill ok">Completa</span></td></tr>
+            <tr><td>Vendas e facturação</td><td><span class="pill run">Em curso</span>no RTM desde 20/10</td></tr>
+            <tr><td>Facturação digital AGT</td><td><span class="pill ok">Operacional</span>facturas do RTM comunicadas à AGT</td></tr>
+            <tr><td>Dados móveis Unitel + Africell</td><td><span class="pill run">Em preparação</span>balanceamento entre as duas redes</td></tr>
+            <tr><td>Registo de clientes</td><td><span class="pill run">Em curso</span>861 (8,6%)</td></tr>
+            <tr><td>Zonamento das rotas</td><td><span class="pill run">Em definição</span></td></tr>
+            <tr><td>Estação de carga</td><td><span class="pill run">Em preparação</span></td></tr>
+            <tr><td>Back-office RTM ↔ SAP</td><td><span class="pill next">2.ª fase</span></td></tr>
+            <tr><td>Rotas de distribuição</td><td><span class="pill next">2.ª fase</span>entrega em D+1 por 11 motoristas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stack s5">
+        <div class="tile"><h3>Até 31 de Dezembro</h3>
+          <ul class="list"><li>10.000 clientes: 15 por rota e por dia</li><li>Fechar o zonamento das rotas</li><li>Instalar a estação de carga</li><li>Activar a 2.ª rede de dados (Africell)</li><li>Recalibrar o forecast com as vendas reais</li></ul>
+        </div>
+        <div class="tile"><h3>Depois</h3>
+          <ul class="list"><li>Início de 2027: pelo menos 1 rota em cada província</li><li>2.ª fase: back-office RTM ↔ SAP e rotas de distribuição</li><li>Painel de gestão com os indicadores do RTM</li><li>2027–2028: Plano Tecnológico do grupo</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="head inner" id="apoio"><p class="kicker">Apoio da Direcção Comercial</p><h2>Onde a Direcção Comercial pode acelerar.</h2></div>
+    <div class="grid">
+      <div class="tile s6 ask"><span class="k grad">1</span><div><h3>Validar o zonamento das rotas</h3><p class="txt">Confirmar os limites das 11 rotas antes de os fixar.</p></div></div>
+      <div class="tile s6 ask"><span class="k grad">2</span><div><h3>Acelerar o registo de clientes</h3><p class="txt">Apoiar as rotas abaixo de 14 clientes por dia, para chegar aos 10.000.</p></div></div>
+      <div class="tile s6 ask"><span class="k grad">3</span><div><h3>Preparar a 2.ª fase</h3><p class="txt">Calendário e recursos: back-office RTM ↔ SAP e rotas de distribuição.</p></div></div>
+      <div class="tile s6 ask"><span class="k grad">4</span><div><h3>Definir os critérios de expansão</h3><p class="txt">Mínimos de GO / HOLD / REPLAN para abrir cada fase.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><img class="logo-l" src="naval-logo.png" alt="Logótipo Naval"><img class="logo-d" src="naval-logo-escuro.png" alt="Logótipo Naval"></div>
+    <p><b>Confidencial.</b> Documento de uso interno do Grupo Naval Angola · Projectos Digitais.</p>
+    <p>Fontes: Working Plan RTM, controlo de vendas por vendedor (20 e 21/10/2026), exportações RTM de clientes (22/10/2026, 16h00), Organigrama de Gestão RTM Rev. 1. Valores em AKZ sem IVA (IVA de 14%), salvo indicação em contrário. Forecast e retorno são estimativas, a recalibrar com dados reais.</p>
+  </div>
+</footer>
+
+<div class="lang" role="group" aria-label="Idioma"><span class="lab">Idioma</span><button type="button" id="lang-pt" data-l="pt" aria-pressed="true">PT</button><button type="button" id="lang-en" data-l="en" aria-pressed="false">EN</button></div>
+
+<script>
+(function(){
+var EN={"Secções": "Sections", "Resumo": "Summary", "Percurso": "Timeline", "Vendas": "Sales", "Solução": "Solution", "Mercado": "Market", "Clientes": "Customers", "Equipa": "Team", "Retorno": "Payback", "Expansão": "Expansion", "Estado": "Status", "Grupo Naval Angola · Projectos Digitais": "Grupo Naval Angola · Digital Projects", "A venda porta a porta do grupo passou a ser digital. Ponto de situação, do arranque à operação no terreno.": "The group's door-to-door sales have gone digital. Status update, from kick-off to field operations.", "Dados a 22 de Outubro de 2026": "Data as of 22 October 2026", "· Direcção Comercial Internacional · Confidencial": "· International Sales Directorate · Confidential", "Rotas activas": "Active routes", "Luanda e Icolo e Bengo": "Luanda and Icolo e Bengo", "1.º dia completo no RTM": "1st full day on RTM", "+52% face ao último dia manual": "+52% vs. the last manual day", "Clientes registados": "Customers registered", "8,6% da meta de 10.000": "8.6% of the 10,000 target", "Rotas em 2030": "Routes by 2030", "21 províncias, por fases": "21 provinces, in phases", "Porquê o RTM": "Why RTM", "Do papel ao acto da venda.": "From paper to point of sale.", "O ciclo passa a fechar no cliente: stock, pagamento e documento na mesma transacção.": "The cycle now closes at the customer: stock, payment and invoice in a single transaction.", "Dimensão": "Dimension", "Modelo manual": "Manual model", "Modelo RTM": "RTM model", "Pedido": "Order", "Requisição em papel, em bloco": "Paper requisition pad", "Rota do dia na aplicação": "Daily route in the app", "Intervenientes": "People involved", "9 no ciclo de venda": "9 in the sales cycle", "3 no ciclo de venda": "3 in the sales cycle", "Facturação": "Invoicing", "D+1, após conferência física": "Next day, after a physical check", "Documento no acto da venda": "Invoice at the point of sale", "Stock": "Stock", "Reconciliação manual": "Manual reconciliation", "Actualização automática": "Automatic update", "Tempo por venda": "Time per sale", "Cerca de 18 minutos": "About 18 minutes", "Meta: 10 minutos": "Target: 10 minutes", "Percurso · planeado vs. real": "Timeline · planned vs. actual", "Em operação desde 21 de Outubro.": "Live since 21 October.", "29 dias depois do previsto. O dia 20 ainda foi de venda manual; no dia 21, todas as rotas venderam no RTM.": "29 days later than planned. 20 October was still a manual sales day; on 21 October every route sold through RTM.", "Marcos de 2026": "2026 milestones", "Kick-off e pagamentos do arranque": "Kick-off and start-up payments", "Sistemas instalados e testados": "Systems installed and tested", "Catálogo de 45 referências preparado": "45-item catalogue ready", "Arranque previsto no plano": "Planned go-live", "Início do registo de clientes": "Customer registration starts", "Último dia de venda manual": "Last manual sales day", "Meta: 10.000 clientes registados": "Target: 10,000 customers registered", "Planeado vs. real": "Planned vs. actual", "Marco": "Milestone", "Plano": "Plan", "Real": "Actual", "Arranque": "Go-live", "Registo/dia": "Registrations/day", "Kits de venda": "Sales kits", "Desvio no arranque:": "Go-live delay:", "+29 dias": "+29 days", "Vendas 2026": "2026 sales", "Real e forecast, até 31 de Dezembro.": "Actual and forecast, to 31 December.", "Vendas líquidas mensais das 11 rotas, em M AKZ. Forecast recalibrado para o arranque em Outubro.": "Monthly net sales of the 11 routes, in AKZ millions. Forecast recalibrated for the October go-live.", "Forecast sem RTM": "Forecast without RTM", "Ganho RTM": "RTM gain", "Vendas mensais 2026: real de Janeiro a Junho, forecast de Julho a Dezembro com o ganho do RTM a partir de Outubro": "2026 monthly sales: actual January to June, forecast July to December with the RTM gain from October", "Fev": "Feb", "Abr": "Apr", "Mai": "May", "Ago": "Aug", "Set": "Sep", "Out": "Oct", "Dez": "Dec", "Forecast 2026 com RTM": "2026 forecast with RTM", "Plano de Agosto: 6.750 M": "August plan: 6,750 M", "Ganho do RTM em 2026": "RTM gain in 2026", "Plano: +973 M, com arranque a 21/09": "Plan: +973 M, with go-live on 21/09", "1.º semestre (real)": "First half (actual)", "+67% de Janeiro a Junho": "+67% from January to June", "Manual vs. RTM, por vendedor": "Manual vs. RTM, by sales rep", "1.º dia no RTM: +52%.": "1st day on RTM: +52%.", "Mesmas 11 rotas. 20/10, último dia manual, contra 21/10, primeiro dia completo no RTM.": "Same 11 routes. 20/10, the last manual day, against 21/10, the first full day on RTM.", "20/10 · manual": "20/10 · manual", "21/10 · RTM": "21/10 · RTM", "Vendas por vendedor em 20 e 21 de Outubro": "Sales by rep on 20 and 21 October", "Vendas no dia": "Sales for the day", "Antes: 13,7 M AKZ · +52%": "Before: 13.7 M AKZ · +52%", "Caixas vendidas": "Cases sold", "Antes: 758 · +57%": "Before: 758 · +57%", "Vendedores com vendas": "Reps with sales", "de 11": "of 11", "Antes: 9 · facturas de 38 para 49": "Before: 9 · invoices up from 38 to 49", "A solução": "The solution", "O que muda no terreno.": "What changes in the field.", "Ecrã do smartphone RTM: logótipo Naval, RTM Mobile Sales e as duas aplicações de venda": "RTM smartphone screen: Naval logo, RTM Mobile Sales and the two sales apps", "No cliente": "At the customer", "O promotor vende, cobra e entrega o documento na hora.": "The rep sells, collects payment and hands over the invoice on the spot.", "No mesmo dia": "Same day", "Vendas, stock e novos clientes visíveis, sem papel.": "Sales, stock and new customers visible, with no paper.", "Para a gestão": "For management", "Controlo por rota, por promotor e por cliente. Equipamentos geridos à distância, em qualquer província.": "Control by route, by rep and by customer. Devices managed remotely, in any province.", "Smartphone com as aplicações de venda e impressora portátil · 2.ª fase: integração com o SAP do grupo": "Smartphone with the sales apps and a portable printer · Phase 2: integration with the group's SAP", "Mercado e operação": "Market and operations", "45 referências. 2.630 clientes. 11 rotas.": "45 products. 2,630 customers. 11 routes.", "Catálogo por empresa": "Catalogue by company", "Empresa": "Company", "Ref.": "Items", "Famílias": "Families", "PVP (AKZ)": "Retail price (AKZ)", "Massas, farinha, arroz": "Pasta, flour, rice", "Fraldas, sabão": "Nappies, soap", "Óleos alimentares": "Cooking oils", "Circuito da mercadoria": "Goods flow", "Indústrias": "Manufacturers", "Armazéns RTM": "RTM warehouses", "Food na Foodtec · Non Food na Higitec": "Food at Foodtec · Non-food at Higitec", "Venda:": "Sales:", "11 rotas, 1001 a 1011, uma por promotor.": "11 routes, 1001 to 1011, one per rep.", "2.ª fase:": "Phase 2:", "11 rotas de distribuição com motorista.": "11 delivery routes with drivers.", "Carteira:": "Customer base:", "2.630 clientes em 129 localidades, 239 por rota.": "2,630 customers in 129 localities, 239 per route.", "Registo de clientes": "Customer registration", "861 clientes em 13 dias úteis.": "861 customers in 13 working days.", "Meta: 10.000 até 31 de Dezembro de 2026, só com as 11 rotas actuais.": "Target: 10,000 by 31 December 2026, with the current 11 routes only.", "Da meta de 10.000": "Of the 10,000 target", "792 activos · 66 por validar": "792 active · 66 awaiting validation", "Ritmo necessário": "Required pace", "por dia": "per day", "15 por rota e por dia, nos 57 dias restantes": "15 per route per day over the remaining 57 days", "Só registo": "Registration only", "Registo e venda": "Registration and sales", "Novos clientes por dia, Outubro": "New customers per day, October", "Novos clientes por dia de 6 a 22 de Outubro, contra a meta de 154 por dia": "New customers per day from 6 to 22 October, against the target of 154 per day", "Meta 154": "Target 154", "Registo no terreno": "Field registration", "Validação": "Validation", "Aprovação": "Approval", "Cliente activo": "Active customer", "Organização": "Organisation", "Equipa de gestão do RTM.": "RTM management team.", "Arranque às 07:15, saída para rota às 07:30. Balanço do dia às 15:00.": "Briefing at 07:15, out on the route at 07:30. Daily review at 15:00.", "Coordenador de Operações": "Operations Coordinator", "Validação de Dados": "Data Validation", "Logística": "Logistics", "Logística e Distribuição": "Logistics and Distribution", "Coordenador Regional": "Regional Coordinator", "Equipa de terreno": "Field team", "11 comerciais": "11 sales reps", "Afectos aos comerciais": "Assigned to the reps", "11 motoristas": "11 drivers", "Economia e retorno": "Economics and return", "Valeu a pena?": "Was it worth it?", "No primeiro dia completo, as rotas venderam 125% do ritmo anterior. Se o plano se cumprir, o investimento paga-se em Janeiro de 2027.": "On the first full day, the routes sold 125% of their previous pace. If the plan holds, the investment pays back in January 2027.", "1.º dia no RTM vs. média anterior": "1st RTM day vs. previous average", "20,8 M AKZ contra 16,6 M AKZ por dia útil no 1.º semestre": "20.8 M AKZ against 16.6 M AKZ per working day in the first half", "Investimento no ano 1": "Year 1 investment", "Capex 49,38 M (único) + Opex 21,54 M por trimestre, sem IVA": "Capex 49.38 M (one-off) + Opex 21.54 M per quarter, excl. VAT", "Para pagar o custo do RTM": "To cover the RTM cost", "M AKZ/mês": "M AKZ/month", "de vendas acima do nível anterior. Plano: 57 M AKZ por rota/mês (antes 35,7)": "of sales above the previous level. Plan: 57 M AKZ per route/month (previously 35.7)", "Cenário do plano: saldo acumulado": "Plan scenario: cumulative balance", "Margem extra do RTM (15%) menos investimento, em M AKZ.": "Extra RTM margin (15%) minus investment, in AKZ millions.", "Saldo acumulado de Julho de 2026 a Março de 2027: negativo até Dezembro, positivo a partir de Janeiro de 2027": "Cumulative balance from July 2026 to March 2027: negative until December, positive from January 2027", "Retorno, se o plano se cumprir": "Payback, if the plan holds", "Cerca de 3 meses após o arranque": "About 3 months after go-live", "Efeito de escala": "Economies of scale", "Custo mensal por rota:": "Monthly cost per route:", "652 mil AKZ": "652k AKZ", "com 11 rotas,": "with 11 routes,", "299 mil AKZ": "299k AKZ", "com 30 rotas (−54%).": "with 30 routes (−54%).", "De 11 a cerca de 651 rotas.": "From 11 to around 651 routes.", "Por fases, com decisão GO / HOLD / REPLAN em cada uma. Cenário de planeamento, revisto todos os trimestres.": "In phases, with a GO / HOLD / REPLAN decision at each one. Planning scenario, reviewed every quarter.", "Fase 0 · 2026": "Phase 0 · 2026", "Fase 1 · 2027": "Phase 1 · 2027", "Fase 2 · 2028": "Phase 2 · 2028", "Fase 3 · 2029": "Phase 3 · 2029", "Fase 4 · 2030": "Phase 4 · 2030", "Luanda. Piloto e estabilização.": "Luanda. Pilot and stabilisation.", "Luanda, Icolo e Bengo e Bengo.": "Luanda, Icolo e Bengo and Bengo.", "Benguela, Huíla, Huambo, Cuanza Sul, Cabinda e Uíge.": "Benguela, Huíla, Huambo, Cuanza Sul, Cabinda and Uíge.", "14 províncias.": "14 provinces.", "Cobertura das 21 províncias.": "Coverage of all 21 provinces.", "Critérios para avançar de fase": "Criteria to move to the next phase", "Stock disponível ≥ 95%, produtividade mínima por rota, cobrança controlada, nível de serviço logístico, equipa formada e plataforma estável. Cenário base de facturação: 40 mil milhões AKZ em 2027 e 400 mil milhões AKZ em 2030.": "Stock availability ≥ 95%, minimum productivity per route, controlled collections, logistics service level, trained team and a stable platform. Base revenue scenario: 40 billion AKZ in 2027 and 400 billion AKZ in 2030.", "Estado e próximos passos": "Status and next steps", "Ponto de situação a 22 de Outubro.": "Status as of 22 October.", "Frente": "Workstream", "Sistemas e equipamentos": "Systems and devices", "Operacional": "Live", "15 kits": "15 kits", "Catálogo": "Catalogue", "Normalizado": "Standardised", "45 referências": "45 products", "Equipa de gestão": "Management team", "Completa": "Complete", "Vendas e facturação": "Sales and invoicing", "Em curso": "In progress", "no RTM desde 21/10": "on RTM since 21/10", "Zonamento das rotas": "Route zoning", "Em definição": "Being defined", "Estação de carga": "Charging station", "Em preparação": "In preparation", "Integração com o SAP": "SAP integration", "2.ª fase": "Phase 2", "Rotas de distribuição": "Delivery routes", "Até 31 de Dezembro": "By 31 December", "10.000 clientes: 15 por rota e por dia": "10,000 customers: 15 per route per day", "Fechar o zonamento das rotas": "Finalise route zoning", "Instalar a estação de carga": "Install the charging station", "Recalibrar o forecast com as vendas reais": "Recalibrate the forecast with actual sales", "Depois": "Next", "2.ª fase: integração com o SAP e rotas de distribuição": "Phase 2: SAP integration and delivery routes", "Painel de gestão com os indicadores do RTM": "Management dashboard with RTM indicators", "2027–2028: Plano Tecnológico do grupo": "2027–2028: group Technology Plan", "Apoio da Direcção Comercial": "Support from the Sales Directorate", "Onde a Direcção Comercial pode acelerar.": "Where the Sales Directorate can speed things up.", "Validar o zonamento das rotas": "Validate the route zoning", "Confirmar os limites das 11 rotas antes de os fixar.": "Confirm the boundaries of the 11 routes before fixing them.", "Acelerar o registo de clientes": "Speed up customer registration", "Apoiar as rotas abaixo de 14 clientes por dia, para chegar aos 10.000.": "Support the routes below 14 customers per day, to reach 10,000.", "Preparar a 2.ª fase": "Prepare phase 2", "Integração com o SAP e rotas de distribuição: calendário e recursos.": "SAP integration and delivery routes: schedule and resources.", "Definir os critérios de expansão": "Set the expansion criteria", "Mínimos de GO / HOLD / REPLAN para abrir cada fase.": "Minimum GO / HOLD / REPLAN thresholds for opening each phase.", "Confidencial.": "Confidential.", "Documento de uso interno do Grupo Naval Angola · Projectos Digitais.": "For internal use within Grupo Naval Angola · Digital Projects.", "Fontes: Working Plan RTM, controlo de vendas por vendedor (20 e 21/10/2026), exportações RTM de clientes (22/10/2026, 16h00), Organigrama de Gestão RTM Rev. 1. Valores em AKZ, sem IVA nos custos. Forecast e retorno são estimativas, a recalibrar com dados reais.": "Sources: RTM Working Plan, sales control by rep (20 and 21/10/2026), RTM customer exports (22/10/2026, 16:00), RTM Management Org Chart Rev. 1. Values in AKZ, costs excl. VAT. Forecast and payback are estimates, to be recalibrated with actual data.", "Jan 27": "Jan 27", "Jan 2027": "Jan 2027", "Logótipo Naval": "Naval logo", "Idioma": "Language", "Indicadores": "Indicators", "Grupo Naval Angola · Projectos Digitais · Dados a 22 de Outubro de 2026 · Confidencial": "Grupo Naval Angola · Digital Projects · Data as of 22 October 2026 · Confidential", "A venda, no acto.": "Selling, on the spot.", "Manual → RTM": "Manual → RTM", "D+1 → no acto": "next day → on the spot", "18 → 10 min": "18 → 10 min", "Indústrias →": "Manufacturers →", "→ Armazéns RTM": "→ RTM warehouses", "2.ª fase: integração SAP e 11 rotas de distribuição": "Phase 2: SAP integration and 11 delivery routes", "1.º dia no RTM": "1st day on RTM", "+52% face ao dia manual": "+52% vs. the manual day", "Ritmo vs. antes": "Pace vs. before", "antes 16,6 M AKZ/dia": "before: 16.6 M AKZ/day", "Forecast 2026": "2026 forecast", "+576 M do RTM": "+576 M from RTM", "investimento 135,5 M AKZ": "investment 135.5 M AKZ", "Vendas 2026, real e forecast": "2026 sales, actual and forecast", "13,7 → 20,8 · +52%": "13.7 → 20.8 · +52%", "meta 10.000 até 31/12": "target 10,000 by 31/12", "Retorno: cenário do plano": "Payback: plan scenario", "saldo acumulado, M AKZ": "cumulative balance, AKZ millions", "Margem de 15% sobre o ganho, menos Capex de 49,4 M e Opex de 7,2 M por mês. Para pagar o custo: +48 M AKZ/mês de vendas.": "15% margin on the gain, minus 49.4 M Capex and 7.2 M monthly Opex. To cover the cost: +48 M AKZ/month in sales.", "Percurso 2026": "2026 timeline", "Kick-off": "Kick-off", "Sistemas instalados": "Systems installed", "Arranque previsto": "Planned go-live", "Último dia manual": "Last manual day", "1.º dia no RTM · +29 dias": "1st day on RTM · +29 days", "10.000 clientes": "10,000 customers", "Estado a 22/10": "Status at 22/10", "Sistemas e 15 kits": "Systems and 15 kits", "Vendas no RTM": "Sales on RTM", "Zonamento e estação de carga": "Zoning and charging station", "SAP e rotas de distribuição": "SAP and delivery routes", "GO / HOLD / REPLAN por fase": "GO / HOLD / REPLAN per phase", "Luanda, Icolo e Bengo, Bengo": "Luanda, Icolo e Bengo, Bengo", "+6 províncias": "+6 provinces", "14 províncias": "14 provinces", "21 províncias": "21 provinces", "Custo por rota: 652 mil AKZ com 11 rotas, 299 mil com 30.": "Cost per route: 652k AKZ with 11 routes, 299k with 30.", "Validar o zonamento": "Validate the zoning", "das 11 rotas": "of the 11 routes", "Acelerar o registo:": "Speed up registration:", "154 clientes/dia": "154 customers/day", "Preparar a 2.ª fase:": "Prepare phase 2:", "SAP e distribuição": "SAP and delivery", "Definir os critérios": "Set the criteria", "de expansão": "for expansion", "Equipa:": "Team:", "Michael Samson (Operações) · Sirak Kahsay (Validação de Dados) · Nathan Alemayehu (Regional) · Teresa Gomes e Manuel Queia (Logística) · 11 comerciais e 11 motoristas": "Michael Samson (Operations) · Sirak Kahsay (Data Validation) · Nathan Alemayehu (Regional) · Teresa Gomes and Manuel Queia (Logistics) · 11 sales reps and 11 drivers", "Fontes: Working Plan RTM, controlo de vendas por vendedor (20 e 21/10), exportações RTM de clientes (22/10). Valores em AKZ, custos sem IVA. Forecast e retorno são estimativas.": "Sources: RTM Working Plan, sales control by rep (20 and 21/10), RTM customer exports (22/10). Values in AKZ, costs excl. VAT. Forecast and payback are estimates.", "Economia e retorno · Valeu a pena?": "Economics and return · Was it worth it?", "1.º dia completo no RTM · +29 dias": "1st full day on RTM · +29 days", "−54%": "−54%", "Custo mensal por rota: 652 mil AKZ com 11 rotas, 299 mil com 30.": "Monthly cost per route: 652k AKZ with 11 routes, 299k with 30.", "Mais vendas no 1.º dia completo no RTM, face ao último dia de venda manual.": "More sales on the first full day on RTM than on the last manual sales day.", "M AKZ no dia": "M AKZ for the day", "do ritmo anterior, no 1.º dia completo no RTM.": "of the previous pace, on the first full day on RTM.", "861 (8,6%)": "861 (8.6%)", "No RTM": "On RTM", "Vendas registadas no RTM · 20 a 22/10": "Sales recorded on RTM · 20 to 22/10", "23,57 M AKZ em 3 dias.": "23.57 M AKZ in 3 days.", "60 documentos emitidos no acto da venda, 56 clientes, as 11 rotas a vender.": "60 documents issued at the point of sale, 56 customers, all 11 routes selling.", "Facturado no RTM": "Invoiced on RTM", "Média de 7,86 M AKZ por dia": "Average of 7.86 M AKZ per day", "Documentos · clientes": "Documents · customers", "60 · 56": "60 · 56", "Valor médio de 393 mil AKZ por documento": "Average of 393k AKZ per document", "Pago no acto": "Paid on the spot", "59 facturas-recibo (22,79 M) · 1 factura a crédito (0,78 M)": "59 invoice-receipts (22.79 M) · 1 credit invoice (0.78 M)", "Por dia": "By day", "M AKZ · n.º de documentos": "M AKZ · number of documents", "Por rota": "By route", "Total de 20 a 22/10, M AKZ": "Total from 20 to 22/10, M AKZ", "Vendas no RTM por dia: 3,13 M AKZ a 20/10, 11,43 M a 21/10 e 9,01 M a 22/10": "RTM sales by day: 3.13 M AKZ on 20/10, 11.43 M on 21/10 and 9.01 M on 22/10", "Vendas no RTM por rota, de 20 a 22 de Outubro": "RTM sales by route, 20 to 22 October", "20/10 · 10": "20/10 · 10", "21/10 · 36": "21/10 · 36", "22/10 · 14": "22/10 · 14", "1009 · Efrem Eyob": "1009 · Efrem Eyob", "· 3 doc.": "· 3 doc.", "1004 · Nelson Moisés": "1004 · Nelson Moisés", "· 14 doc.": "· 14 doc.", "1003 · Jocel Prata": "1003 · Jocel Prata", "· 11 doc.": "· 11 doc.", "1006 · Rosa Vemba": "1006 · Rosa Vemba", "· 7 doc.": "· 7 doc.", "1011 · Robel Tewelde": "1011 · Robel Tewelde", "1008 · Daniel Tekeste": "1008 · Daniel Tekeste", "· 1 doc.": "· 1 doc.", "1002 · Cristina Sachuma": "1002 · Cristina Sachuma", "· 5 doc.": "· 5 doc.", "1005 · Olindo Baião": "1005 · Olindo Baião", "1001 · Andréa Santos": "1001 · Andréa Santos", "· 6 doc.": "· 6 doc.", "1007 · Awet Haile": "1007 · Awet Haile", "1010 · Nahom Teame": "1010 · Nahom Teame", "· 2 doc.": "· 2 doc.", "Kits de venda no terreno": "Sales kits in the field", "Um por rota: smartphone com as aplicações de venda e impressora portátil · 2.ª fase: integração com o SAP do grupo": "One per route: smartphone with the sales apps and a portable printer · Phase 2: integration with the group's SAP", "11 kits no terreno": "11 kits in the field", "M AKZ sem IVA no dia": "M AKZ excl. VAT for the day", "M AKZ sem IVA": "M AKZ excl. VAT", "20,67 M AKZ sem IVA em 3 dias.": "20.67 M AKZ excl. VAT in 3 days.", "23,57 M AKZ com IVA (14%). 60 documentos emitidos no acto da venda, 56 clientes, as 11 rotas a vender.": "23.57 M AKZ incl. VAT (14%). 60 documents issued at the point of sale, 56 customers, all 11 routes selling.", "Facturado no RTM, sem IVA": "Invoiced on RTM, excl. VAT", "Com IVA: 23,57 M AKZ · média de 6,89 M AKZ por dia sem IVA": "Incl. VAT: 23.57 M AKZ · average of 6.89 M AKZ per day excl. VAT", "Valor médio de 345 mil AKZ por documento, sem IVA": "Average of 345k AKZ per document, excl. VAT", "59 facturas-recibo (19,99 M) · 1 factura a crédito (0,68 M), sem IVA": "59 invoice-receipts (19.99 M) · 1 credit invoice (0.68 M), excl. VAT", "Vendas no RTM por dia, sem IVA: 2,75 M AKZ a 20/10, 10,03 M a 21/10 e 7,90 M a 22/10": "RTM sales by day, excl. VAT: 2.75 M AKZ on 20/10, 10.03 M on 21/10 and 7.90 M on 22/10", "M AKZ sem IVA · n.º de documentos": "M AKZ excl. VAT · number of documents", "Total de 20 a 22/10, M AKZ sem IVA": "Total from 20 to 22/10, M AKZ excl. VAT", "18,2 M AKZ contra 16,6 M AKZ por dia útil no 1.º semestre, ambos sem IVA": "18.2 M AKZ against 16.6 M AKZ per working day in the first half, both excl. VAT", "Fontes: Working Plan RTM, controlo de vendas por vendedor (20 e 21/10/2026), exportações RTM de clientes (22/10/2026, 16h00), Organigrama de Gestão RTM Rev. 1. Valores em AKZ sem IVA (IVA de 14%), salvo indicação em contrário. Forecast e retorno são estimativas, a recalibrar com dados reais.": "Sources: RTM Working Plan, sales control by rep (20 and 21/10/2026), RTM customer exports (22/10/2026, 16:00), RTM Management Org Chart Rev. 1. Values in AKZ excl. VAT (14% VAT) unless stated otherwise. Forecast and payback are estimates, to be recalibrated with actual data.", "Um por rota: smartphone com as aplicações de venda e impressora portátil · 2.ª fase: back-office do RTM integrado com o SAP do grupo": "One per route: smartphone with the sales apps and a portable printer · Phase 2: RTM back-office integrated with the group's SAP", "2.ª fase: back-office do RTM integrado com o SAP e rotas de distribuição": "Phase 2: RTM back-office integrated with SAP, and delivery routes", "Integração do back-office do RTM com o SAP e rotas de distribuição: calendário e recursos.": "Integration of the RTM back-office with SAP, and delivery routes: schedule and resources.", "Back-office RTM ↔ SAP": "RTM back-office ↔ SAP", "2.ª fase: venda e entrega separadas": "Phase 2: sales and delivery separated", "O vendedor faz a venda; o motorista entrega no dia seguinte. Optimiza o custo da rota de venda face ao custo da entrega.": "The rep makes the sale; the driver delivers the next day. This optimises the cost of the sales route against the cost of delivery.", "Dia D · Vendedor": "Day D · Sales rep", "Encomenda e pagamento no cliente": "Order and payment at the customer", "Back-office RTM": "RTM back-office", "Valida o pagamento": "Validates the payment", "Dia D+1 · Motorista": "Day D+1 · Driver", "Entrega e emite a factura": "Delivers and issues the invoice", "11 rotas de distribuição, com o motorista separado do vendedor.": "11 delivery routes, with the driver separate from the rep.", "entrega em D+1 por 11 motoristas": "next-day delivery by 11 drivers", "Organigrama de gestão do RTM": "RTM management org chart", "Valida o pagamento e avisa o armazém": "Validates the payment and notifies the warehouse", "Armazém": "Warehouse", "Prepara a mercadoria para a próxima rota de entrega": "Prepares the goods for the next delivery route", "Visível no RTM no acto da venda": "Visible in RTM at the point of sale", "reconciliação automática com o SAP": "automatic reconciliation with SAP", "Fábricas vendem à Naval Trading": "Factories sell to Naval Trading", "Foodtec e Refitec (Food) · Higitec (Non-Food) · registo no SAP": "Foodtec and Refitec (Food) · Higitec (Non-food) · recorded in SAP", "Transferência para os armazéns RTM": "Transfer to the RTM warehouses", "Armazém Food dentro da Foodtec · armazém Non-Food dentro da Higitec": "Food warehouse inside Foodtec · Non-food warehouse inside Higitec", "Carga diária das rotas": "Daily route loading", "Transferência do armazém para cada uma das 11 rotas": "Transfer from the warehouse to each of the 11 routes", "Venda e fecho do dia": "Sales and end-of-day close", "Abertura de caixa, venda no cliente, fecho de caixa com o que regressa": "Cash opening, sale at the customer, cash closing with returned stock", "Operação no terreno": "Field operations", "11 rotas de venda,": "11 sales routes,", "1001 a 1011, uma por vendedor, com 11 kits no terreno.": "1001 to 1011, one per rep, with 11 kits in the field.", "2 armazéns RTM:": "2 RTM warehouses:", "Food dentro da Foodtec e Non-Food dentro da Higitec.": "Food inside Foodtec and Non-food inside Higitec.", "Procedimento de venda": "Sales procedure", "Da fábrica ao cliente.": "From factory to customer.", "Como funciona hoje e o que muda na 2.ª fase.": "How it works today and what changes in phase 2.", "Hoje · 1.ª fase": "Today · phase 1", "Em operação": "Live", "Procedimento de venda na 1.ª fase": "Sales procedure in phase 1", "Procedimento de venda na 2.ª fase": "Sales procedure in phase 2", "Compra às fábricas": "Purchase from the factories", "Foodtec, Refitec e Higitec vendem a mercadoria à Naval Trading, com registo no SAP.": "Foodtec, Refitec and Higitec sell the goods to Naval Trading, recorded in SAP.", "Food (Foodtec e Refitec) para o armazém dentro da Foodtec; Non-Food (Higitec) para o armazém dentro da Higitec. A passagem do stock do SAP para o RTM é feita manualmente.": "Food (Foodtec and Refitec) to the warehouse inside Foodtec; Non-food (Higitec) to the warehouse inside Higitec. Stock is moved from SAP to RTM manually.", "Carga da rota": "Route loading", "Às 07:15, reunião de arranque e transferência do armazém para cada rota. Saída às 07:30.": "At 07:15, start-of-day briefing and transfer from the warehouse to each route. Out at 07:30.", "Abertura de caixa": "Cash opening", "O vendedor confirma no RTM o stock com que sai para a rota.": "The rep confirms in RTM the stock taken out on the route.", "Venda no cliente": "Sale at the customer", "Registo do cliente, venda na aplicação e factura-recibo impressa no acto, com pagamento em numerário ou TPA. Rotas autorizadas emitem factura a crédito.": "Customer registration, sale in the app and invoice-receipt printed on the spot, paid in cash or by card. Authorised routes issue credit invoices.", "Validação no back-office": "Back-office validation", "Novos clientes validados e aprovados; pagamentos conferidos.": "New customers validated and approved; payments checked.", "Fecho de caixa": "Cash closing", "Conferência do dinheiro e do stock que regressa. Balanço do dia às 15:00.": "Check of cash and returned stock. Daily review at 15:00.", "Próxima": "Next", "Venda e entrega separadas: optimiza o custo da rota de venda face ao custo da entrega.": "Sales and delivery separated: optimises the cost of the sales route against the cost of delivery.", "Regista a encomenda e recebe o pagamento no cliente.": "Records the order and collects payment at the customer.", "Valida o pagamento e dá indicação ao armazém.": "Validates the payment and instructs the warehouse.", "Prepara a mercadoria para a próxima rota de entrega.": "Prepares the goods for the next delivery route.", "Entrega ao cliente e emite a factura, porque o pagamento já foi validado.": "Delivers to the customer and issues the invoice, as payment has already been validated.", "Back-office RTM integrado com o SAP:": "RTM back-office integrated with SAP:", "o stock passa a ser reconciliado automaticamente, sem passagem manual.": "stock is reconciled automatically, with no manual transfer.", "Procedimento": "Procedure", "Escolha a fase e avance passo a passo, ou carregue em Reproduzir.": "Choose the phase and go step by step, or press Play.", "Arranque às 07:15 e saída para rota até às 07:30. Balanço do dia às 15:00. Carga das rotas para o dia seguinte das 15:30 às 17:00.": "Briefing at 07:15 and out on the route by 07:30. Daily review at 15:00. Routes loaded for the next day from 15:30 to 17:00.", "Validação automática": "Automatic validation", "RTM ↔ portal da AGT, de 1 em 1 minuto": "RTM ↔ AGT tax portal, every minute", "Válido: cliente activo": "Valid: active customer", "Não válido: pendente": "Not valid: pending", "aguarda intervenção humana": "awaits manual review", "792 activos · 66 pendentes de validação": "792 active · 66 pending validation", "Vendas pelo RTM a 22/10": "Sales through RTM on 22/10", "Vendas via RTM e fora do RTM · 21 e 22/10": "Sales through RTM and outside RTM · 21 and 22/10", "das vendas dos dois dias já passaram pelo RTM. A 22/10, todas.": "of sales over the two days already went through RTM. On 22/10, all of them.", "no RTM a 21/10 · transição": "through RTM on 21/10 · transition", "no RTM a 22/10": "through RTM on 22/10", "M AKZ sem IVA nos 2 dias": "M AKZ excl. VAT over 2 days", "Por vendedor, 21/10": "By rep, 21/10", "% no RTM · total M AKZ sem IVA": "% through RTM · total M AKZ excl. VAT", "Via RTM": "Through RTM", "Fora do RTM": "Outside RTM", "Vendas por vendedor a 21 de Outubro, separadas entre RTM e fora do RTM": "Sales by rep on 21 October, split between RTM and outside RTM", "+ 15,69 = 25,72": "+ 15.69 = 25.72", "+ 0 = 7,90": "+ 0 = 7.90", "do ritmo de vendas anterior, nos dois primeiros dias de transição.": "of the previous sales pace, over the first two transition days.", "16,8 M AKZ por dia em 21 e 22/10 (RTM e fora do RTM) contra 16,6 M AKZ por dia útil no 1.º semestre, ambos sem IVA": "16.8 M AKZ per day on 21 and 22/10 (RTM and outside RTM) against 16.6 M AKZ per working day in the first half, both excl. VAT", "Primeiras vendas no RTM, ainda facturadas também no SAP": "First RTM sales, still also invoiced in SAP", "Transição: 39% das vendas no RTM · +29 dias": "Transition: 39% of sales through RTM · +29 days", "1.º dia com 100% das vendas no RTM": "1st day with 100% of sales through RTM", "RTM vs. fora": "RTM vs. outside", "Andréa Santos": "Andréa Santos", "Cristina Sachuma": "Cristina Sachuma", "Jocel Prata": "Jocel Prata", "Nelson Moisés": "Nelson Moisés", "Olindo Baião": "Olindo Baião", "Rosa Vemba": "Rosa Vemba", "Awet Haile": "Awet Haile", "Daniel Tekeste": "Daniel Tekeste", "Efrem Eyob": "Efrem Eyob", "Nahom Teame": "Nahom Teame", "Robel Tewelde": "Robel Tewelde", "23,57 M AKZ com IVA (14%). 60 documentos emitidos no acto da venda, 56 clientes, as 11 rotas a vender. As vendas de 20/10 foram também facturadas no SAP a 21/10.": "23.57 M AKZ incl. VAT (14%). 60 documents issued at the point of sale, 56 customers, all 11 routes selling. Sales from 20/10 were also invoiced in SAP on 21/10.", "Vendas via RTM e fora do RTM · 20 a 22/10": "Sales through RTM and outside RTM · 20 to 22/10", "das vendas passaram pelo RTM a 22/10, depois de 19% a 20/10 e 39% a 21/10.": "of sales went through RTM on 22/10, after 19% on 20/10 and 39% on 21/10.", "no RTM a 20/10": "through RTM on 20/10", "no RTM a 21/10": "through RTM on 21/10", "+ 12,06 = 14,81": "+ 12.06 = 14.81", "do ritmo de vendas anterior, nos três primeiros dias de transição.": "of the previous sales pace, over the first three transition days.", "16,1 M AKZ por dia de 20 a 22/10 (RTM e fora do RTM) contra 16,6 M AKZ por dia útil no 1.º semestre, ambos sem IVA": "16.1 M AKZ per day from 20 to 22/10 (RTM and outside RTM) against 16.6 M AKZ per working day in the first half, both excl. VAT", "O RTM acrescenta 576 M AKZ às vendas de 2026, entre Outubro e Dezembro.": "RTM adds 576 M AKZ to 2026 sales, between October and December.", "Real · Jan–Jun": "Actual · Jan–Jun", "Forecast · Jul–Dez": "Forecast · Jul–Dec", "Ganho RTM (desde 20/10)": "RTM gain (since 20/10)", "Real Jan–Jun": "Actual Jan–Jun", "Forecast Jul–Dez sem RTM": "Forecast Jul–Dec without RTM", "Ganho RTM Out–Dez": "RTM gain Oct–Dec", "Total 2026": "2026 total", "2026 com RTM vs. sem RTM": "2026 with RTM vs. without RTM", "Sem RTM: 5.780 M · ": "Without RTM: 5.780 M · ", "Plano: +973 M com arranque a 21/09. O arranque a 20/10 adiou 397 M.": "Plan: +973 M with launch on 21/09. Launching on 20/10 deferred 397 M.", "Jan–Jun · M AKZ": "Jan–Jun · M AKZ", "Jul–Dez · M AKZ": "Jul–Dec · M AKZ", "Out–Dez · M AKZ": "Oct–Dec · M AKZ", "com RTM · M AKZ": "with RTM · M AKZ", "O que vendemos e onde": "What we sell and where", "45 referências. 2.630 clientes.": "45 SKUs. 2,630 customers.", "Referências no catálogo": "SKUs in the catalogue", "Foodtec 19 · Higitec 18 · Refitec 8": "Foodtec 19 · Higitec 18 · Refitec 8", "Preço de venda ao público": "Retail price", "mil AKZ": "thousand AKZ", "Massas, farinha, arroz, fraldas, sabão e óleos": "Pasta, flour, rice, nappies, soap and oils", "Clientes na carteira": "Customers in the portfolio", "129 localidades · 239 por rota": "129 localities · 239 per route", "Food na Foodtec · Non-Food na Higitec": "Food at Foodtec · Non-Food at Higitec", "PVP · mil AKZ": "Retail price · thousand AKZ", "45 referências. 11 rotas.": "45 SKUs. 11 routes.", "O promotor vende, cobra e entrega o documento na hora. A factura é comunicada à AGT por facturação digital.": "The sales rep sells, collects payment and hands over the invoice on the spot. The invoice is reported to AGT (the tax authority) through e-invoicing.", "Facturação digital AGT": "AGT e-invoicing", "facturas do RTM comunicadas à AGT": "RTM invoices reported to AGT (tax authority)", "23,57 M AKZ com IVA (14%). 60 documentos emitidos no acto da venda e comunicados à AGT por facturação digital, 56 clientes, as 11 rotas a vender.": "23.57 M AKZ incl. VAT (14%). 60 documents issued at the point of sale and reported to AGT through e-invoicing, 56 customers, all 11 routes selling.", "23,57 M AKZ com IVA (14%). 60 documentos emitidos no acto da venda e comunicados à AGT por facturação digital, 56 clientes, as 11 rotas a vender. As vendas de 20/10 foram também facturadas no SAP a 21/10.": "23.57 M AKZ incl. VAT (14%). 60 documents issued at the point of sale and reported to AGT through e-invoicing, 56 customers, all 11 routes selling. Sales from 20/10 were also invoiced in SAP on 21/10.", "A venda porta a porta do grupo passou a ser digital.": "The group's door-to-door sales have gone digital.", "Ponto de situação, do arranque à operação no terreno.": "Status update, from kick-off to field operations.", "Requisição em papel": "Paper requisition", "D+1, após conferência": "Next day, after checking", "Visível no RTM no acto": "Visible in RTM on the spot", "reconciliação com o SAP": "reconciliation with SAP", "1.as vendas no RTM, também facturadas no SAP": "First RTM sales, also invoiced in SAP", "das vendas passaram pelo RTM a 22/10,": "of sales went through RTM on 22/10,", "depois de 19% a 20/10 e 39% a 21/10.": "after 19% on 20/10 and 39% on 21/10.", "23,57 M AKZ com IVA (14%) · 60 documentos · 56 clientes · 11 rotas a vender.": "23.57 M AKZ incl. VAT (14%) · 60 documents · 56 customers · 11 routes selling.", "Documentos emitidos no acto e comunicados à AGT por facturação digital.": "Documents issued on the spot and reported to AGT through e-invoicing.", "As vendas de 20/10 foram também facturadas no SAP a 21/10.": "Sales from 20/10 were also invoiced in SAP on 21/10.", "Com IVA: 23,57 M AKZ": "Incl. VAT: 23.57 M AKZ", "Média: 6,89 M AKZ por dia": "Average: 6.89 M AKZ per day", "Média: 345 mil AKZ": "Average: 345k AKZ", "por documento, sem IVA": "per document, excl. VAT", "59 facturas-recibo: 19,99 M": "59 invoice-receipts: 19.99 M", "1 factura a crédito: 0,68 M": "1 credit invoice: 0.68 M", "Plano: +973 M com arranque a 21/09.": "Plan: +973 M with launch on 21/09.", "O arranque a 20/10 adiou 397 M.": "Launching on 20/10 deferred 397 M.", "Vende, cobra e entrega o documento na hora.": "Sells, collects and hands over the invoice on the spot.", "Factura comunicada à AGT (facturação digital).": "Invoice reported to AGT (e-invoicing).", "Vendas, stock e novos clientes visíveis.": "Sales, stock and new customers visible.", "Sem papel.": "No paper.", "Controlo por rota, promotor e cliente.": "Control by route, rep and customer.", "Equipamentos geridos à distância.": "Devices managed remotely.", "Um por rota: smartphone com as aplicações de venda e impressora portátil.": "One per route: smartphone with the sales apps and a portable printer.", "2.ª fase: back-office do RTM integrado com o SAP do grupo.": "Phase 2: RTM back-office integrated with the group's SAP.", "Arranque às 07:15 e saída para rota até às 07:30. Balanço do dia às 15:00.": "Briefing at 07:15 and out on the route by 07:30. Daily review at 15:00.", "Carga das rotas para o dia seguinte das 15:30 às 17:00.": "Routes loaded for the next day from 15:30 to 17:00.", "do ritmo de vendas anterior,": "of the previous sales pace,", "nos três primeiros dias de transição.": "over the first three transition days.", "16,1 M AKZ/dia de 20 a 22/10, no RTM e fora do RTM": "16.1 M AKZ/day from 20 to 22/10, in and outside RTM", "16,6 M AKZ por dia útil no 1.º semestre · sem IVA": "16.6 M AKZ per working day in H1 · excl. VAT", "Capex 49,38 M (único)": "Capex 49.38 M (one-off)", "Opex 21,54 M por trimestre": "Opex 21.54 M per quarter", "acima do nível de vendas anterior": "above the previous sales level", "Plano: 57 M por rota/mês (era 35,7)": "Plan: 57 M per route/month (was 35.7)", "Cerca de 3 meses": "About 3 months", "após o arranque": "after launch", "Custo por rota/mês: 652 mil AKZ": "Cost per route/month: 652k AKZ", "com 11 rotas · 299 mil com 30": "with 11 routes · 299k with 30", "Por fases, com decisão GO / HOLD / REPLAN em cada uma.": "In phases, with a GO / HOLD / REPLAN decision at each one.", "Cenário de planeamento, revisto todos os trimestres.": "Planning scenario, reviewed every quarter.", "Luanda.": "Luanda.", "Piloto e estabilização.": "Pilot and stabilisation.", "Luanda, Icolo e Bengo": "Luanda, Icolo e Bengo", "e Bengo.": "and Bengo.", "Benguela, Huíla, Huambo,": "Benguela, Huíla, Huambo,", "Cuanza Sul, Cabinda e Uíge.": "Cuanza Sul, Cabinda and Uíge.", "Cobertura das": "Coverage of all", "21 províncias.": "21 provinces.", "2.ª fase: back-office RTM ↔ SAP e rotas de distribuição": "Phase 2: RTM back-office ↔ SAP and delivery routes", "Calendário e recursos: back-office RTM ↔ SAP e rotas de distribuição.": "Schedule and resources: RTM back-office ↔ SAP and delivery routes.", "Em operação desde 20/10.": "Live since 20/10.", "no RTM desde 20/10": "on RTM since 20/10", "Ecrã real · a aplicação como está instalada": "Real screen · the app as it is installed", "e a funcionar nos smartphones das 11 rotas": "and running on the smartphones of all 11 routes", "Ecrã real do smartphone RTM: logótipo Naval, RTM Mobile Sales e as duas aplicações de venda": "Real RTM smartphone screen: Naval logo, RTM Mobile Sales and the two sales apps", "Dados móveis: Unitel e, a seguir, também Africell, com balanceamento entre as duas redes para os comerciais nunca ficarem sem dados.": "Mobile data: Unitel and, next, Africell too, load-balanced across both networks so the reps never lose data.", "Dados móveis Unitel + Africell": "Mobile data Unitel + Africell", "balanceamento entre as duas redes": "load-balanced across both networks", "Activar a 2.ª rede de dados (Africell)": "Activate the 2nd data network (Africell)", "Dados móveis:": "Mobile data:", "Unitel e, a seguir, também Africell, com balanceamento": "Unitel and, next, Africell too, load-balanced", "entre as duas redes para os comerciais terem sempre dados.": "across both networks so the reps always have data.", "Gestão central: o vendedor só acede a estas duas aplicações": "Central management: reps can only open these two apps", "Smartphones geridos de forma central: o vendedor só tem acesso às duas aplicações de venda.": "Smartphones managed centrally: reps only have access to the two sales apps.", "Smartphones geridos de forma central.": "Smartphones managed centrally.", "No início de 2027, pelo menos 1 rota em cada uma das 21 províncias, para analisar e depois expandir.": "In early 2027, at least 1 route in each of the 21 provinces, to assess and then expand.", "Por fases, com decisão GO / HOLD / REPLAN em cada uma. Cenário revisto todos os trimestres.": "In phases, with a GO / HOLD / REPLAN decision at each one. Scenario reviewed every quarter.", "Início: ≥ 1 rota em cada": "Start: ≥ 1 route in each", "uma das 21 províncias.": "of the 21 provinces.", "Expansão nas províncias": "Expansion in the provinces", "com melhores resultados.": "with the best results.", "Reforço da cobertura": "Coverage strengthened", "em todas as províncias.": "in every province.", "Início de 2027: pelo menos 1 rota em cada província": "Early 2027: at least 1 route in every province"};
+var NUM=/^[0-9.,\s+\u2212\u2248%\u2192\u2013\-]+$/;
+function swap(t){return t.replace(/,/g,'\u0001').replace(/\./g,',').replace(/\u0001/g,'.');}
+function tr(t){if(Object.prototype.hasOwnProperty.call(EN,t))return EN[t];if(NUM.test(t))return swap(t);return null;}
+var nodes=[],attrs=[];
+var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentNode&&n.parentNode.nodeName;if(p==='SCRIPT'||p==='STYLE')return NodeFilter.FILTER_REJECT;return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;}});
+while(w.nextNode())nodes.push({n:w.currentNode,o:w.currentNode.nodeValue});
+document.querySelectorAll('[alt],[aria-label]').forEach(function(el){['alt','aria-label'].forEach(function(a){if(el.hasAttribute(a))attrs.push({el:el,a:a,o:el.getAttribute(a)});});});
+var TITLE_PT=document.title;
+function set(l){
+  nodes.forEach(function(x){if(l==='pt'){x.n.nodeValue=x.o;return;}var m=x.o.match(/^(\s*)([\s\S]*?)(\s*)$/);var t=tr(m[2].replace(/\s+/g,' '));if(t!==null)x.n.nodeValue=m[1]+t+m[3];});
+  attrs.forEach(function(x){if(l==='pt'){x.el.setAttribute(x.a,x.o);return;}var t=tr(x.o.replace(/\s+/g,' ').trim());if(t!==null)x.el.setAttribute(x.a,t);});
+  document.documentElement.lang=l==='en'?'en-GB':'pt-PT';
+  document.title=l==='en'?'RTM Mobile Sales Project':TITLE_PT;
+  document.querySelectorAll('.lang button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-l')===l?'true':'false');});
+  try{localStorage.setItem('rtm-lang',l);}catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){set(b.getAttribute('data-l'));});});
+var start='pt';
+try{if(location.hash==='#en')start='en';else if(location.hash==='#pt')start='pt';else{var v=localStorage.getItem('rtm-lang');if(v==='en'||v==='pt')start=v;}}catch(e){}
+document.documentElement.lang='pt-PT';
+if(start==='en')set('en');
+})();
+</script>
+
+<script>
+(function(){
+var SEL='.wrap p,.wrap .list li,.wrap td,.wrap th,.wrap dd,.wrap dt,.wrap h2,.wrap h3,.wrap .flow .s,.wrap .tl .t,.wrap .x';
+function over(el){
+  if(el.tagName=='TD'||el.tagName=='TH'){var t=el.closest('table'),b=t.parentElement;return t.scrollWidth>b.clientWidth+1;}
+  if(el.scrollWidth>el.clientWidth+1)return true;
+  var tile=el.closest('.tile,.mega,.head,.flow,.tl');
+  if(tile){var r=el.getBoundingClientRect(),q=tile.getBoundingClientRect();if(r.right>q.right+1)return true;}
+  return false;
+}
+function fit(){
+  var els=document.querySelectorAll(SEL);
+  els.forEach(function(e){e.style.fontSize='';});
+  if(window.innerWidth<900)return;
+  els.forEach(function(e){
+    if(!e.offsetParent||!e.textContent.trim())return;
+    var base=parseFloat(getComputedStyle(e).fontSize),f=base,min=base*0.85,i=0;
+    while(over(e)&&f>min&&i<40){f-=0.5;e.style.fontSize=f+'px';i++;}
+  });
+}
+window.__fit=fit;
+var tm;function later(){clearTimeout(tm);tm=setTimeout(fit,60);}
+window.addEventListener('resize',later);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(later);
+window.addEventListener('load',later);
+new MutationObserver(later).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+var pr=document.getElementById('procedimento');if(pr)new MutationObserver(later).observe(pr,{childList:true,subtree:true});
+later();
+})();
+</script>
+</body>
+</html>
