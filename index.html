@@ -300,9 +300,12 @@ footer img{height:34px;width:auto}
 .pbtn.play{background:var(--cta);color:#fff;border-color:transparent}
 .proc-intro{color:var(--muted);font-size:15px;margin:0}
 .track-wrap{overflow-x:auto;padding:14px 4px 6px}
-.track{display:grid;grid-template-columns:repeat(6,minmax(104px,1fr));list-style:none;margin:0;padding:0;min-width:600px}
+.track{display:grid;grid-template-columns:repeat(var(--n,9),minmax(92px,1fr));list-style:none;margin:0;padding:0;min-width:calc(var(--n,9)*92px)}
+.nd{cursor:pointer}.nd:focus-visible .dot{outline:2px solid var(--bar-c);outline-offset:3px}
+.dots{display:none!important}
 .nd{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
 .nd:not(:last-child)::after{content:"";position:absolute;top:22px;left:calc(50% + 24px);right:calc(-50% + 24px);border-top:2px dashed var(--line)}
+.nd.done:not(:last-child)::after,.nd.on:not(:last-child)::after{border-top:2px solid var(--bar-c)}
 .nd .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--tile-2);border:2px solid var(--line);color:var(--muted);position:relative;z-index:1;transition:transform .3s,background .3s,border-color .3s}
 .nd .lb{font-size:13px;font-weight:600;color:var(--muted);line-height:1.25;padding:0 4px}
 .nd.done .dot{border-color:var(--bar-c);color:var(--link)}
@@ -606,8 +609,8 @@ var P=[
             en:['GI at the factory','The factory issues the GI to release the goods from its warehouse and sends the document to Naval Trading.','Factory','SAP','GI · Goods Issue','After the PO']},
    {n:[0,1],pt:['GR na Naval Trading','A Naval Trading converte a PO em GR e a mercadoria dá entrada no armazém correspondente: REFITEC/FOODTEC PIV - FOOD ou HIGITEC PIV - NON FOOD.','Naval Trading','SAP','GR · Goods Receipt','Na recepção da mercadoria'],
             en:['GR at Naval Trading','Naval Trading converts the PO into a GR and the goods enter the matching warehouse: REFITEC/FOODTEC PIV - FOOD or HIGITEC PIV - NON FOOD.','Naval Trading','SAP','GR · Goods Receipt','On receipt of the goods']},
-   {n:[1,2],pt:['Transferência SAP → RTM','É emitido o documento «Transferência SAP to RTM», que dá saída de todo o stock no SAP. São emitidos dois: um para os artigos Food e outro para os Non-Food. É lançada a entrada nos armazéns RTM correspondentes. Nesta fase é manual.','Naval Trading','SAP → RTM, manual','Transferência SAP to RTM (2: Food e Non-Food)','Após a GR'],
-            en:['SAP → RTM transfer','The «SAP to RTM transfer» document is issued, taking all the stock out of SAP. Two are issued: one for Food items and one for Non-Food. The entry is posted in the matching RTM warehouses. Manual in this phase.','Naval Trading','SAP → RTM, manual','SAP to RTM transfer (2: Food and Non-Food)','After the GR']},
+   {n:[1,2],pt:['Transferência SAP → RTM','É emitido o documento «Transferência SAP to RTM», que dá saída de todo o stock no SAP. São emitidos dois documentos, um para os artigos Food e outro para os Non-Food. É lançada a entrada nos armazéns RTM correspondentes. Nesta fase é manual.','Naval Trading','SAP → RTM, manual','Transferência SAP to RTM (2: Food e Non-Food)','Após a GR'],
+            en:['SAP → RTM transfer','The «SAP to RTM transfer» document is issued, taking all the stock out of SAP. Two documents are issued, one for Food items and one for Non-Food. The entry is posted in the matching RTM warehouses. Manual in this phase.','Naval Trading','SAP → RTM, manual','SAP to RTM transfer (2: Food and Non-Food)','After the GR']},
    {n:[2,3],pt:['Transferência e carga das rotas','No fim do dia, o stock passa dos armazéns RTM para os armazéns das rotas, conforme as PO dos vendedores, e os carros ficam carregados para o dia seguinte.','Logística e Distribuição','RTM','PO do vendedor · transferência armazém → rota','15:30 às 17:00 · saída no dia seguinte até às 07:30'],
             en:['Route transfer and loading','At the end of the day, stock moves from the RTM warehouses to the route warehouses, according to the reps’ POs, and the vehicles are loaded for the next day.','Logistics and Distribution','RTM','Rep PO · warehouse → route transfer','15:30 to 17:00 · out the next day by 07:30']},
    {n:[3,4],pt:['Venda no cliente','Com o dia já aberto no sistema: registo do cliente, venda na aplicação, pagamento em numerário ou TPA e documento impresso na hora.','Vendedor','Aplicação RTM e impressora portátil','Factura-recibo · factura a crédito nas rotas autorizadas','Durante a rota'],
@@ -633,6 +636,7 @@ var P=[
             en:['Automatic SAP ↔ RTM','The SAP to RTM transfer and stock reconciliation become automatic and seamless.','Systems','RTM back-office ↔ SAP','Stock updated in both systems','Automatic']}
   ]}
 ];
+var SH=[{"pt": ["PO à fábrica", "GI na fábrica", "GR na Naval", "SAP → RTM", "Carga das rotas", "Venda no cliente", "Entre rotas", "Validação AGT", "Fecho do dia"], "en": ["PO to factory", "GI at factory", "GR at Naval", "SAP → RTM", "Route loading", "Sale", "Route to route", "AGT validation", "Day close"]}, {"pt": ["PO no terreno", "Pagamento validado", "Armazém", "Entrega D+1", "SAP ↔ RTM"], "en": ["Field PO", "Payment check", "Warehouse", "D+1 delivery", "SAP ↔ RTM"]}];
 var ph=0,st=0,timer=null,L='pt';
 var $=function(id){return document.getElementById(id);};
 function lang(){return (document.documentElement.lang||'pt').slice(0,2)==='en'?'en':'pt';}
@@ -644,10 +648,11 @@ function render(){
   $('proc-prev').textContent='← '+t.prev; $('proc-next').textContent=t.next+' →';
   $('proc-play').textContent=timer?('❚❚ '+t.pause):('▶ '+t.play);
   $('proc-prev').disabled=st===0; $('proc-next').disabled=st===p.steps.length-1&&!timer;
-  var done={}; for(var k=0;k<st;k++)p.steps[k].n.forEach(function(i){done[i]=1;});
-  $('proc-track').innerHTML=p.nodes[L].map(function(x,i){
-    var on=s.n.indexOf(i)>=0, cls=on?'on':(done[i]?'done':'');
-    return '<li class="nd '+cls+'"><span class="dot">'+(i+1)+'</span><span class="lb">'+esc(x)+'</span></li>';}).join('');
+  $('proc-track').style.setProperty('--n',p.steps.length);
+  $('proc-track').innerHTML=SH[ph][L].map(function(x,i){
+    var cls=i===st?'on':(i<st?'done':'');
+    return '<li class="nd '+cls+'" data-st="'+i+'" role="button" tabindex="0" aria-label="'+esc(t.step+' '+(i+1)+': '+p.steps[i][L][0])+'"><span class="dot">'+(i+1)+'</span><span class="lb">'+esc(x)+'</span></li>';}).join('');
+  var on=$('proc-track').querySelector('.on'),tw=on&&on.closest('.track-wrap');if(tw&&tw.scrollWidth>tw.clientWidth){var a=on.getBoundingClientRect(),b=tw.getBoundingClientRect();tw.scrollLeft+=a.left-b.left-(b.width-a.width)/2;}
   $('proc-detail').innerHTML='<div class="dl"><p class="sn">'+t.step+' '+(st+1)+' '+t.of+' '+p.steps.length+'</p><h3>'+esc(d[0])+'</h3><p class="dx">'+esc(d[1]).replace(/\. /g,'.<br>').replace(/: /g,':<br>')+'</p></div>'+
     '<dl class="facts"><div><dt>'+t.who+'</dt><dd>'+esc(d[2])+'</dd></div><div><dt>'+t.sys+'</dt><dd>'+esc(d[3])+'</dd></div><div><dt>'+t.doc+'</dt><dd>'+esc(d[4])+'</dd></div><div><dt>'+t.when+'</dt><dd>'+esc(d[5])+'</dd></div></dl>';
   $('proc-dots').innerHTML=p.steps.map(function(x,i){return '<button type="button" role="tab" aria-selected="'+(i===st)+'" data-st="'+i+'" title="'+esc(x[L][0])+'"><b>'+(i+1)+'</b><span>'+esc(x[L][0])+'</span></button>';}).join('');
@@ -656,6 +661,8 @@ function go(i){var n=P[ph].steps.length;st=(i+n)%n;render();}
 function stop(){if(timer){clearInterval(timer);timer=null;}}
 $('proc-tabs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;stop();ph=+b.getAttribute('data-ph');st=0;render();});
 $('proc-dots').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;stop();go(+b.getAttribute('data-st'));});
+$('proc-track').addEventListener('click',function(e){var li=e.target.closest('[data-st]');if(!li)return;stop();go(+li.getAttribute('data-st'));});
+$('proc-track').addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var li=e.target.closest('[data-st]');if(!li)return;e.preventDefault();stop();go(+li.getAttribute('data-st'));});
 $('proc-prev').addEventListener('click',function(){stop();go(st-1);});
 $('proc-next').addEventListener('click',function(){stop();go(st+1);});
 $('proc-play').addEventListener('click',function(){
