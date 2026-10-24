@@ -126,11 +126,11 @@ footer{padding:28px 0 48px;font-size:13px;color:var(--muted)}
   <div class="wrap">
     <p class="kicker">Proposta para a 2.ª fase · back-office RTM ↔ SAP</p>
     <h1>O RTM emite. O SAP regista.<br>Nos dois sentidos, sem lançamentos à mão.</h1>
-    <p class="lead">Como replicar no SAP as vendas, as contas correntes e os stocks, sabendo que é o RTM que gera os documentos fiscais e os comunica à AGT. <b>SAP → RTM</b>: a transferência de stock é automática. <b>RTM → SAP</b>: as vendas e os movimentos são automáticos.</p>
+    <p class="lead">Como replicar no SAP as vendas, as contas correntes e os stocks, sabendo que é o RTM que gera os documentos fiscais e os comunica à AGT. <b>SAP → RTM</b>: a entrada de stock no RTM é automática após o GR. <b>RTM → SAP</b>: as vendas e os movimentos são automáticos.</p>
     <div class="rule">
       <div><h3>1 · Um único emissor fiscal</h3><p>Só o RTM numera, imprime e comunica as facturas à AGT. O SAP nunca volta a emitir o mesmo documento, para evitar duplicados como os de 20/10.</p></div>
       <div><h3>2 · Documento a documento</h3><p>Cada documento RTM dá origem a um registo no SAP, com o número RTM como referência única. Nada é agregado: cliente, artigo, rota e valor ficam iguais nos dois sistemas.</p></div>
-      <div><h3>3 · SAP → RTM automático, antes da venda</h3><p>Depois do GR de uma <b>PO de reposição RTM</b>, a «Transferência SAP to RTM» (Food e Non-Food) é gerada e lançada no RTM automaticamente, só com as quantidades dessa PO. No SAP é uma transferência entre depósitos: o stock não sai do balanço e o RTM fica logo com stock para vender.</p></div>
+      <div><h3>3 · GR directo no depósito RTM</h3><p>A PO de reposição RTM tem como destino o depósito RTM Food ou RTM Non-Food. O GR dá entrada directamente aí, sem documento de transferência, e o RTM recebe a entrada automaticamente, antes de qualquer venda. O stock nunca sai do balanço.</p></div>
     </div>
   </div>
 </section>
@@ -185,8 +185,8 @@ function add(o,ch){Object.keys(ch).forEach(function(k){o[k]=(o[k]||0)+ch[k];});r
 /* cada passo: a=actor, m=mensagem, r=alterações RTM, s=alterações SAP, p=ícone do pacote */
 var E={
  carga:{t:'🚚 Carga da rota 1006',st:[
-  {a:3,p:'🏭',m:'🗄️ GR da <b>PO de reposição RTM</b> registado. O SAP gera <b>automaticamente</b> a Transferência SAP to RTM (Non-Food) só com as quantidades dessa PO, como 311: o stock passa para o depósito RTM sem sair do SAP.'},
-  {a:2,p:'🤖',m:'🔌 A interface lê a transferência e envia-a ao RTM <b>sem ninguém tocar</b>.'},
+  {a:3,p:'🏭',m:'🗄️ GR da <b>PO de reposição RTM</b> registado <b>directamente no depósito RTM Non-Food</b>. Sem documento de transferência: menos um passo.'},
+  {a:2,p:'🤖',m:'🔌 A interface lê o GR e envia as quantidades ao RTM <b>sem ninguém tocar</b>.'},
   {a:0,p:'📥',m:'📥 O RTM lança a entrada no armazém Non-Food e confirma ao SAP: <b>já há stock para vender</b>.'},
   {a:0,p:'📝',m:'🧑🏾‍💼 O vendedor pede <b>40 cx</b> de sabão ao responsável do armazém Non-Food (PO manual).'},
   {a:0,p:'📦',m:'👷 O <b>responsável de armazém</b> transfere 40 cx do armazém para o carro da rota 1006, no RTM. Só ele mexe nos armazéns.',r:{wh:-40,r6:40}},
@@ -298,7 +298,7 @@ reset();
 
         <div class="ln sap">🗄️ SAP</div>
         <div class="c sap"><b>Cliente (BP) criado</b><span>Mesmo NIF e nome validados</span></div>
-        <div class="c sap"><b>GR da PO RTM → Transf.</b><span>Automática, só as quantidades dessa PO</span></div>
+        <div class="c sap"><b>GR no depósito RTM</b><span>PO RTM com destino RTM Food ou Non-Food</span></div>
         <div class="c sap"><b>Encomenda · entrega · factura</b><span>Saída 601 da rota · factura sem nova numeração fiscal</span></div>
         <div class="c sap"><b>Conta corrente</b><span>Partida em aberto, compensada pelo recibo</span></div>
         <div class="c sap"><b>Caixa e banco</b><span>Depósito por rota, conciliado com as FR</span></div>
@@ -351,8 +351,8 @@ reset();
       <div class="tbl"><table>
         <thead><tr><th>Movimento</th><th>Onde nasce</th><th>Registo no SAP</th><th>Resultado</th></tr></thead>
         <tbody>
-          <tr><td><b>Entrada da fábrica (GR)</b></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">PO → GI → GR</span><small>Como hoje: armazéns REFITEC/FOODTEC PIV e HIGITEC PIV.</small></td><td>Stock da Naval Trading no SAP.</td></tr>
-          <tr><td><b>Transferência SAP to RTM</b><small>Dois documentos: Food e Non-Food · automática</small></td><td><span class="tag t-sap">SAP, após o GR de uma PO RTM</span></td><td><span class="tag t-sap">Transferência 311 (ou 301) para os depósitos RTM Food e RTM Non-Food</span><small>Só as PO emitidas para repor o stock do RTM (marcadas como «RTM», por exemplo a PO semanal de sábado) geram transferência, e só com as quantidades recebidas dessa PO, linha a linha. Uma entrega parcial gera uma transferência parcial. As restantes PO ficam no SAP. A interface lança a entrada no RTM com o nº do documento SAP como chave única e o RTM devolve a confirmação.</small></td><td>O RTM recebe exactamente o que foi pedido para ele; o resto do stock SAP não é tocado.</td></tr>
+          <tr><td><b>PO de reposição RTM</b><small>Ex.: a PO semanal de sábado</small></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">PO com destino ao depósito RTM Food ou RTM Non-Food</span><small>As PO de outros canais continuam com destino aos armazéns habituais (REFITEC/FOODTEC PIV e HIGITEC PIV).</small></td><td>Só o que é pedido para o RTM chega ao RTM.</td></tr>
+          <tr><td><b>GR e entrada no RTM</b><small>Automática</small></td><td><span class="tag t-sap">SAP</span> <span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">GR directamente no depósito RTM</span><small>Sem «Transferência SAP to RTM»: é menos um documento. A interface lê o GR e lança a entrada nos armazéns Food e Non-Food do RTM, só com as quantidades recebidas dessa PO, linha a linha (entregas parciais incluídas), com o nº do GR como chave única. O RTM devolve a confirmação.</small></td><td>Stock disponível no RTM em minutos; o SAP continua a vê-lo e a valorizá-lo.</td></tr>
           <tr><td><b>Carga da rota</b><small>PO do vendedor ao responsável do armazém</small></td><td><span class="tag t-rtm">RTM · responsável de armazém</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito Food/Non-Food → depósito da rota (as rotas já existem no SAP como depósitos, ex.: MR12 Efrem Eyob). Entre centros, 301.</small></td><td>Stock de cada carro no SAP.</td></tr>
           <tr><td><b>Venda</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Saída 601 na entrega</span><small>Gerada com a factura (separador Vendas).</small></td><td>Stock da rota abate no SAP como no RTM.</td></tr>
           <tr><td><b>Transferência entre rotas</b></td><td><span class="tag t-rtm">RTM · responsável de armazém</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito da rota A → depósito da rota B.</small></td><td>Vendas não param; stock certo nas duas rotas.</td></tr>
@@ -384,7 +384,7 @@ reset();
     <div class="head"><p class="kicker">Um dia de operação</p><h2>Quando cada passo chega ao SAP.</h2></div>
     <div class="day">
       <div><b>06:30</b><p>Sincronização de dados mestre</p><small>Artigos e preços do SAP para o RTM; clientes novos do RTM para o SAP.</small></div>
-      <div><b>Após o GR de uma PO RTM</b><p>Transferência SAP → RTM automática</p><small>Só as quantidades da PO de reposição do RTM; ficam disponíveis no RTM em minutos.</small></div>
+      <div><b>Após o GR de uma PO RTM</b><p>Entrada automática no RTM</p><small>O GR entra directamente no depósito RTM e as quantidades ficam disponíveis no RTM em minutos.</small></div>
       <div><b>07:15 – 07:30</b><p>Arranque e saída para as rotas</p><small>O stock de cada carro já está no SAP desde a carga do dia anterior.</small></div>
       <div><b>Durante a rota</b><p>Facturas, recibos e NC</p><small>Comunicados à AGT pelo RTM e replicados no SAP de 5 em 5 minutos.</small></div>
       <div><b>15:00</b><p>Balanço do dia</p><small>Vendas e stock por rota já iguais no RTM e no SAP.</small></div>
@@ -412,7 +412,7 @@ reset();
     <div class="grid">
       <div class="card"><h3>🏛️ Fiscal</h3><ul><li>Tipo de factura no SAP sem numeração nem comunicação fiscal, e o seu tratamento no SAF-T do SAP (validar com o consultor fiscal).</li><li>Séries do RTM registadas e comunicadas só pelo RTM.</li></ul></div>
       <div class="card"><h3>🗄️ SAP</h3><ul><li>Tipos de encomenda, entrega e factura para o RTM.</li><li>Depósitos Food e Non-Food e um depósito por rota (já existem para as rotas actuais).</li><li>Contas de caixa por rota, TPA e diferenças de caixa.</li></ul></div>
-      <div class="card"><h3>⚙️ Processo</h3><ul><li>«Transferência SAP to RTM»: passar de saída de stock para transferência entre depósitos (311/301), gerada automaticamente após o GR.</li><li>Como marcar as PO de reposição RTM no SAP (tipo de PO ou campo próprio), para a interface só transferir as suas quantidades.</li><li>Quem aprova acertos de inventário e trata os erros da fila.</li></ul></div>
+      <div class="card"><h3>⚙️ Processo</h3><ul><li>Deixar de usar a «Transferência SAP to RTM»: as PO RTM passam a ter como destino os depósitos RTM Food e RTM Non-Food.</li><li>Como marcar as PO de reposição RTM no SAP (tipo de PO ou campo próprio), para a interface só transferir as suas quantidades.</li><li>Quem aprova acertos de inventário e trata os erros da fila.</li></ul></div>
       <div class="card"><h3>🚀 Arranque</h3><ul><li>Inventário de abertura igual nos dois sistemas.</li><li>Saldos iniciais das contas correntes dos clientes a crédito.</li><li>Período em paralelo com reconciliação diária antes de desligar o processo manual.</li></ul></div>
     </div>
   </div>
