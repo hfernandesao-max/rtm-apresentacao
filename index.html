@@ -939,6 +939,7 @@ function set(l){
   try{localStorage.setItem('rtm-lang',l);}catch(e){}
 }
 document.querySelectorAll('.lang button').forEach(function(b){b.addEventListener('click',function(){set(b.getAttribute('data-l'));});});
+window.addEventListener('storage',function(e){if(e.key==='rtm-lang'&&(e.newValue==='en'||e.newValue==='pt'))set(e.newValue);});
 var start='pt';
 try{if(location.hash==='#en')start='en';else if(location.hash==='#pt')start='pt';else{var v=localStorage.getItem('rtm-lang');if(v==='en'||v==='pt')start=v;}}catch(e){}
 document.documentElement.lang='pt-PT';
