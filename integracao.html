@@ -130,7 +130,7 @@ footer{padding:28px 0 48px;font-size:13px;color:var(--muted)}
     <div class="rule">
       <div><h3>1 · Um único emissor fiscal</h3><p>Só o RTM numera, imprime e comunica as facturas à AGT. O SAP nunca volta a emitir o mesmo documento, para evitar duplicados como os de 20/10.</p></div>
       <div><h3>2 · Documento a documento</h3><p>Cada documento RTM dá origem a um registo no SAP, com o número RTM como referência única. Nada é agregado: cliente, artigo, rota e valor ficam iguais nos dois sistemas.</p></div>
-      <div><h3>3 · O stock fica no SAP</h3><p>O SAP deixa de “esvaziar” o stock na transferência para o RTM. Passa a acompanhar cada movimento do RTM, por armazém e por rota, e os dois stocks batem todos os dias.</p></div>
+      <div><h3>3 · Primeiro o RTM recebe, o SAP não perde</h3><p>A «Transferência SAP to RTM» mantém-se e vem sempre antes da venda. Muda só o efeito no SAP: em vez de dar saída ao stock, passa-o para os depósitos RTM Food e Non-Food. O stock continua no balanço e o SAP acompanha cada movimento.</p></div>
     </div>
   </div>
 </section>
@@ -185,6 +185,8 @@ function add(o,ch){Object.keys(ch).forEach(function(k){o[k]=(o[k]||0)+ch[k];});r
 /* cada passo: a=actor, m=mensagem, r=alterações RTM, s=alterações SAP, p=ícone do pacote */
 var E={
  carga:{t:'🚚 Carga da rota 1006',st:[
+  {a:3,p:'🏭',m:'🗄️ Antes de tudo: <b>Transferência SAP to RTM</b> (Non-Food) como transferência 311. O stock passa para o depósito RTM Non-Food sem sair do SAP.'},
+  {a:0,p:'📦',m:'📥 O RTM recebe a entrada no armazém Non-Food: <b>já há stock para vender</b>.'},
   {a:0,p:'📝',m:'🧑🏾‍💼 O vendedor pede <b>40 cx</b> de sabão ao responsável do armazém Non-Food (PO manual).'},
   {a:0,p:'📦',m:'👷 O responsável transfere 40 cx do armazém para o carro da rota 1006, no RTM.',r:{wh:-40,r6:40}},
   {a:1,skip:1,m:'💤 Não há documento fiscal: a AGT não entra.'},
@@ -295,7 +297,7 @@ reset();
 
         <div class="ln sap">🗄️ SAP</div>
         <div class="c sap"><b>Cliente (BP) criado</b><span>Mesmo NIF e nome validados</span></div>
-        <div class="c sap"><b>Transferência 311</b><span>Armazém Food/Non-Food → depósito da rota</span></div>
+        <div class="c sap"><b>Transf. SAP to RTM · 311</b><span>Para os depósitos RTM; depois, depósito → rota</span></div>
         <div class="c sap"><b>Encomenda · entrega · factura</b><span>Saída 601 da rota · factura sem nova numeração fiscal</span></div>
         <div class="c sap"><b>Conta corrente</b><span>Partida em aberto, compensada pelo recibo</span></div>
         <div class="c sap"><b>Caixa e banco</b><span>Depósito por rota, conciliado com as FR</span></div>
@@ -349,7 +351,7 @@ reset();
         <thead><tr><th>Movimento</th><th>Onde nasce</th><th>Registo no SAP</th><th>Resultado</th></tr></thead>
         <tbody>
           <tr><td><b>Entrada da fábrica (GR)</b></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">PO → GI → GR</span><small>Como hoje: armazéns REFITEC/FOODTEC PIV e HIGITEC PIV.</small></td><td>Stock da Naval Trading no SAP.</td></tr>
-          <tr><td><b>Disponibilizar ao RTM</b></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">Transferência 311 para os depósitos Food e Non-Food</span><small>Em vez da “Transferência SAP to RTM” que tira todo o stock do SAP. O RTM recebe a mesma quantidade.</small></td><td>O SAP continua a ver o stock.</td></tr>
+          <tr><td><b>Transferência SAP to RTM</b><small>Dois documentos: Food e Non-Food</small></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">Transferência 311 (ou 301) para os depósitos RTM Food e RTM Non-Food</span><small>O mesmo documento de hoje, mas sem saída de stock no SAP. O RTM recebe a entrada da mesma quantidade nos armazéns Food e Non-Food: só depois há stock para vender.</small></td><td>Stock disponível no RTM; o SAP continua a vê-lo e a valorizá-lo.</td></tr>
           <tr><td><b>Carga da rota</b><small>PO do vendedor ao responsável do armazém</small></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito Food/Non-Food → depósito da rota (as rotas já existem no SAP como depósitos, ex.: MR12 Efrem Eyob). Entre centros, 301.</small></td><td>Stock de cada carro no SAP.</td></tr>
           <tr><td><b>Venda</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Saída 601 na entrega</span><small>Gerada com a factura (separador Vendas).</small></td><td>Stock da rota abate no SAP como no RTM.</td></tr>
           <tr><td><b>Transferência entre rotas</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito da rota A → depósito da rota B.</small></td><td>Vendas não param; stock certo nas duas rotas.</td></tr>
@@ -407,7 +409,7 @@ reset();
     <div class="grid">
       <div class="card"><h3>🏛️ Fiscal</h3><ul><li>Tipo de factura no SAP sem numeração nem comunicação fiscal, e o seu tratamento no SAF-T do SAP (validar com o consultor fiscal).</li><li>Séries do RTM registadas e comunicadas só pelo RTM.</li></ul></div>
       <div class="card"><h3>🗄️ SAP</h3><ul><li>Tipos de encomenda, entrega e factura para o RTM.</li><li>Depósitos Food e Non-Food e um depósito por rota (já existem para as rotas actuais).</li><li>Contas de caixa por rota, TPA e diferenças de caixa.</li></ul></div>
-      <div class="card"><h3>⚙️ Processo</h3><ul><li>Fim da “Transferência SAP to RTM” que tira todo o stock do SAP.</li><li>Quem aprova acertos de inventário e trata os erros da fila.</li></ul></div>
+      <div class="card"><h3>⚙️ Processo</h3><ul><li>«Transferência SAP to RTM»: passar de saída de stock para transferência entre depósitos (311/301).</li><li>Quem aprova acertos de inventário e trata os erros da fila.</li></ul></div>
       <div class="card"><h3>🚀 Arranque</h3><ul><li>Inventário de abertura igual nos dois sistemas.</li><li>Saldos iniciais das contas correntes dos clientes a crédito.</li><li>Período em paralelo com reconciliação diária antes de desligar o processo manual.</li></ul></div>
     </div>
   </div>
