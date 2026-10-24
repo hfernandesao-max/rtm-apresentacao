@@ -188,7 +188,7 @@ var E={
   {a:3,p:'🏭',m:'🗄️ Antes de tudo: <b>Transferência SAP to RTM</b> (Non-Food) como transferência 311. O stock passa para o depósito RTM Non-Food sem sair do SAP.'},
   {a:0,p:'📦',m:'📥 O RTM recebe a entrada no armazém Non-Food: <b>já há stock para vender</b>.'},
   {a:0,p:'📝',m:'🧑🏾‍💼 O vendedor pede <b>40 cx</b> de sabão ao responsável do armazém Non-Food (PO manual).'},
-  {a:0,p:'📦',m:'👷 O responsável transfere 40 cx do armazém para o carro da rota 1006, no RTM.',r:{wh:-40,r6:40}},
+  {a:0,p:'📦',m:'👷 O <b>responsável de armazém</b> transfere 40 cx do armazém para o carro da rota 1006, no RTM. Só ele mexe nos armazéns.',r:{wh:-40,r6:40}},
   {a:1,skip:1,m:'💤 Não há documento fiscal: a AGT não entra.'},
   {a:2,p:'📦',m:'🔌 A interface envia a transferência ao SAP <b>antes</b> de qualquer venda da rota.'},
   {a:3,p:'📦',m:'🗄️ <b>Transferência 311</b>: depósito Non-Food → depósito da rota 1006.',s:{wh:-40,r6:40}}]},
@@ -213,7 +213,7 @@ var E={
   {a:2,p:'💵',m:'🔌 A interface envia o recibo com o nº da FA que liquida.'},
   {a:3,p:'💵',m:'🗄️ Recebimento <b>compensa a FA</b>: conta corrente a zero; caixa da rota +45.600.',s:{cli:-45600,cx:45600}}]},
  rota:{t:'🔁 Transferência entre rotas',st:[
-  {a:0,p:'🔁',m:'🚧 A rota 1007 ficou sem stock. A rota 1006 passa-lhe <b>5 cx</b> para as vendas não pararem.',r:{r6:-5,r7:5}},
+  {a:0,p:'🔁',m:'🚧 A rota 1007 ficou sem stock. 👷 O <b>responsável de armazém</b> transfere <b>5 cx</b> da rota 1006 para a 1007, para as vendas não pararem.',r:{r6:-5,r7:5}},
   {a:1,skip:1,m:'💤 Não é fiscal: a AGT não entra.'},
   {a:2,p:'🔁',m:'🔌 A interface envia a transferência.'},
   {a:3,p:'🔁',m:'🗄️ <b>Transferência 311</b>: depósito da rota 1006 → depósito da rota 1007.',s:{r6:-5,r7:5}}]},
@@ -352,12 +352,12 @@ reset();
         <tbody>
           <tr><td><b>Entrada da fábrica (GR)</b></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">PO → GI → GR</span><small>Como hoje: armazéns REFITEC/FOODTEC PIV e HIGITEC PIV.</small></td><td>Stock da Naval Trading no SAP.</td></tr>
           <tr><td><b>Transferência SAP to RTM</b><small>Dois documentos: Food e Non-Food</small></td><td><span class="tag t-sap">SAP</span></td><td><span class="tag t-sap">Transferência 311 (ou 301) para os depósitos RTM Food e RTM Non-Food</span><small>O mesmo documento de hoje, mas sem saída de stock no SAP. O RTM recebe a entrada da mesma quantidade nos armazéns Food e Non-Food: só depois há stock para vender.</small></td><td>Stock disponível no RTM; o SAP continua a vê-lo e a valorizá-lo.</td></tr>
-          <tr><td><b>Carga da rota</b><small>PO do vendedor ao responsável do armazém</small></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito Food/Non-Food → depósito da rota (as rotas já existem no SAP como depósitos, ex.: MR12 Efrem Eyob). Entre centros, 301.</small></td><td>Stock de cada carro no SAP.</td></tr>
+          <tr><td><b>Carga da rota</b><small>PO do vendedor ao responsável do armazém</small></td><td><span class="tag t-rtm">RTM · responsável de armazém</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito Food/Non-Food → depósito da rota (as rotas já existem no SAP como depósitos, ex.: MR12 Efrem Eyob). Entre centros, 301.</small></td><td>Stock de cada carro no SAP.</td></tr>
           <tr><td><b>Venda</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Saída 601 na entrega</span><small>Gerada com a factura (separador Vendas).</small></td><td>Stock da rota abate no SAP como no RTM.</td></tr>
-          <tr><td><b>Transferência entre rotas</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito da rota A → depósito da rota B.</small></td><td>Vendas não param; stock certo nas duas rotas.</td></tr>
+          <tr><td><b>Transferência entre rotas</b></td><td><span class="tag t-rtm">RTM · responsável de armazém</span></td><td><span class="tag t-sap">Transferência 311</span><small>Depósito da rota A → depósito da rota B.</small></td><td>Vendas não param; stock certo nas duas rotas.</td></tr>
           <tr><td><b>Devolução de cliente</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Entrada 651</span><small>Com a nota de crédito.</small></td><td>Mercadoria de volta à rota.</td></tr>
-          <tr><td><b>Sobra no fim do dia</b></td><td><span class="tag t-rtm">RTM</span></td><td><span class="tag t-sap">Fica no depósito da rota ou 311 de volta</span><small>Conforme a regra de carga do dia seguinte.</small></td><td>Sem stock “perdido” entre sistemas.</td></tr>
-          <tr><td><b>Acertos de inventário</b></td><td><span class="tag t-rtm">RTM, com aprovação</span></td><td><span class="tag t-sap">Diferença de inventário 701/702</span><small>Só com aprovação da Validação de Dados; nunca automático.</small></td><td>Quebras e sobras rastreadas.</td></tr>
+          <tr><td><b>Sobra no fim do dia</b></td><td><span class="tag t-rtm">RTM · responsável de armazém</span></td><td><span class="tag t-sap">Fica no depósito da rota ou 311 de volta</span><small>Conforme a regra de carga do dia seguinte.</small></td><td>Sem stock “perdido” entre sistemas.</td></tr>
+          <tr><td><b>Acertos de inventário</b></td><td><span class="tag t-rtm">RTM · responsável de armazém, com aprovação</span></td><td><span class="tag t-sap">Diferença de inventário 701/702</span><small>Só com aprovação da Validação de Dados; nunca automático.</small></td><td>Quebras e sobras rastreadas.</td></tr>
         </tbody>
       </table></div>
       <p class="note">Os números de movimento são os standard do SAP (311, 301, 601, 651, 701/702) e servem de referência; os tipos finais definem-se com a equipa SAP.</p>
@@ -370,6 +370,7 @@ reset();
     <div class="head"><p class="kicker">Regras e controlos</p><h2>O que garante que os dois sistemas batem.</h2></div>
     <div class="grid">
       <div class="card"><h3>🔑 Chave única</h3><ul><li>Cada registo no SAP leva o nº do documento RTM e a série.</li><li>Se o mesmo documento chegar duas vezes, o SAP rejeita o segundo.</li><li>Recibos, NC e anulações levam sempre o nº do documento de origem.</li></ul></div>
+      <div class="card"><h3>👷 Quem mexe no stock</h3><ul><li>No RTM, só os responsáveis de armazém fazem movimentos de armazém: cargas, transferências entre rotas, sobras e acertos.</li><li>O vendedor pede (PO) e vende; não movimenta armazéns.</li><li>No SAP, ninguém lança movimentos de rota à mão: entram todos a partir do RTM.</li></ul></div>
       <div class="card"><h3>🔢 Ordem dos envios</h3><ul><li>Cliente antes da factura; transferência para a rota antes da venda.</li><li>O que falha fica numa fila e é repetido automaticamente.</li><li>Erros que não se resolvem sozinhos aparecem num painel para a Validação de Dados.</li></ul></div>
       <div class="card"><h3>🗂️ Tabelas de correspondência</h3><ul><li>Rota ↔ depósito SAP ↔ vendedor ↔ grupo de vendas.</li><li>Artigo RTM ↔ material SAP e unidade (caixa, fardo).</li><li>Meio de pagamento ↔ conta de caixa ou TPA; IVA 14% e isentos ↔ código de imposto.</li></ul></div>
       <div class="card"><h3>⚖️ Reconciliação diária automática</h3><ul><li>Vendas: nº de documentos e valores por rota, RTM = SAP.</li><li>Contas correntes: saldo de cada cliente, RTM = SAP.</li><li>Stock: quantidade por artigo e por depósito, RTM = SAP.</li></ul></div>
